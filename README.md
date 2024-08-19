@@ -10,3 +10,6 @@ The goals of this website are to:
 - provide a link to my resume in a resume section
 - create a contact section
 - add a footer with any additional information
+ 
+ ## Adding this text
+ just to see if my commits are working properly before I begin
