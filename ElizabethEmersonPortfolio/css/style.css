@@ -1,53 +1,306 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+/*
+=========================
+General Styles
+=========================
+*/
+body {  
+    font: 300 16px/22px "Poppins", Arial, Helvetica, sans-serif;
+    background: #3b3c43;
+    color: #afb6be;
+}
+
+.btn {
+    display: inline-block;
+    padding: 15px 30px;
+    margin-right: 10px;
+    background-color: rgba(73,93,145,1);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn:hover {
+    background-color: rgba(59,60,67,1);
+    transform: translateY(-3px);
+}
+
 /*
 =========================
 Header Styles
 =========================
-/*
+*/
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #495d91;
+    padding: 20px 50px;
+    border-bottom: 3px solid #afb6be;
+}
+
+.logo img {
+    max-width: 150px;
+    
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin-left: 30px;
+}
+
+nav ul li a {
+    color:#afb6be;
+    text-decoration: none;
+    font-size: 1.2em;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+
+
+
 
 /*
 =========================
 Hero Section Styles
 =========================
-/*
+*/
+.hero {
+    display: flex;
+    background: rgb(59,60,67);
+    background: linear-gradient(90deg, rgba(59,60,67,1) 73%, rgba(73,93,145,1) 100%);
+    background-size: cover;
+    background-position: center;
+    align-items: center;
+    padding: 100px 20px;
+    color: white;
+}
+
+.hero-content {
+    max-width: 50%;
+}
+
+.hero h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    line-height: normal;
+    
+}
+
+.wave {
+    display: inline-block;
+    animation: wave-animation 2s infinite;
+}
+
+@keyframes wave-animation {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(14deg); }
+    50% { transform: rotate(-8deg); }
+    75% { transform: rotate(14deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.hero p {
+    font-size: 1.2em;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.social links a {
+    margin-right: 15px;
+}
+
+.social-links img {
+    width: 50px;
+    height: 50px;
+}
+
+.hero-buttons .btn {
+    display: inline-block;
+    padding: 15px 30 px;
+    margin-right: 10px;
+    background-color: rgb(59,60,67);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+}
+
+.hero-buttons .btn:hover {
+    background-color: #495d91;
+}
+
+.hero-illustration img {
+    max-width: 100%;
+    height: auto;
+}
+
 
 /*
 =========================
 Section Styles
 =========================
-/*
+*/
+section {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+section h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #495d91;
+}
+
 
 /*
 =========================
 About Me Section
 =========================
-/*
+*/
+#about img {
+    max-width: 200px;
+    border-radius: 50%;
+    display: block;
+    margin: 20px auto;
+}
 
 /*
 =========================
 Skills Section
 =========================
-/*
+*/
+
+#skills li {
+    background-color: #495d91;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 1.2em;
+}
+
 
 /*
 =========================
 Projects Section
 =========================
-/*
+*/
+#projects .project {
+    background-color: #495d91;
+    border: 1px solid #afb6be;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 0cqh600px;
+}
+
+#projects .project img {
+    max-width: 100%;
+    height: auto;
+}
 
 /*
 =========================
 Resume Section
 =========================
-/*
+*/
+
+#resume a {
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: #495d91;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+}
+
+resume a:hover {
+    background-color: #495d91;
+}
+
 
 /*
 =========================
 Contact Section
 =========================
-/*
+*/
+
+#contact p, #contact a {
+    font-size: 1.2em;
+    color: #afb6be;
+}
 
 /*
 =========================
 Footer Styles
 =========================
-/*
+*/
+footer {
+    background-color: #495d91;
+    border-top: 3px solid #afb6be;
+    text-align: center;
+    padding: 20px 0;
+    position: relative;
+    width: 100%;
+    bottom:0;
+}
