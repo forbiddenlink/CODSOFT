@@ -1,31 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head> 
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>My Blogging Platform</title>
-        <link rel="stylesheet" href="frontend/styles.css">
-    </head>
-    <body>
-        <header>
-            <nav>
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><input type="text" placeholder="Search..."></li>
-                </ul>
-            </nav>
-        </header>
-        <main>
-            <section id="blog-posts">
-                <!--Blog posts will go here-->
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Blogging Platform</title>
+    <link rel="stylesheet" href="frontend/styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><input type="text" placeholder="Search..."></li>
+                <li><button id="logout-button" style="display: none;">Logout</button></li>
+            </ul>
+        </nav>
+    </header>
 
-            </section>
-        </main>
-        <footer>
-            <p>&copy; 2024 Elizabeth Emerson's Blog</p>
-            <!-- Add social media links here -->
-        </footer>
-    </body>
+    <main>
+        <section id="blog-posts">
+            <!-- Blog posts will be loaded here -->
+        </section>
+
+        <!-- Blog Post Creation Form (visible only to Editors and Admins) -->
+        <section id="create-post-section" style="display: none;">
+            <h2>Create a New Blog Post</h2>
+            <form id="create-post-form">
+                <label for="title">Title:</label>
+                <input type="text" id="post-title" name="title" required><br>
+                <label for="content">Content:</label>
+                <textarea id="post-content" name="content" required></textarea><br>
+                <label for="author">Author:</label>
+                <input type="text" id="post-author" name="author" required><br>
+                <button type="submit">Create Post</button>
+            </form>
+        </section>
+
+        <!-- Register Form -->
+        <section id="register-section">
+            <h2>Register</h2>
+            <form id="register-form">
+                <label for="username">Username:</label>
+                <input type="text" id="register-username" name="username" required><br>
+                <label for="password">Password:</label>
+                <input type="password" id="register-password" name="password" required><br>
+                <label for="role">Role:</label>
+                <select id="register-role" name="role" required>
+                    <option value="Viewer">Viewer</option>
+                    <option value="Editor">Editor</option>
+                </select><br>
+                <button type="submit">Register</button>
+            </form>
+        </section>
+
+        <!-- Login Form -->
+        <section id="login-section">
+            <h2>Login</h2>
+            <form id="login-form">
+                <label for="username">Username:</label>
+                <input type="text" id="login-username" name="username" required><br>
+                <label for="password">Password:</label>
+                <input type="password" id="login-password" name="password" required><br>
+                <button type="submit">Login</button>
+            </form>
+        </section>
+
+        <!-- Comment Section -->
+        <section class="comments" id="comments-section" style="display: none;">
+            <h3>Comments</h3>
+            <ul id="comments-list">
+                <!-- Comments will be loaded here -->
+            </ul>
+            <form id="comment-form" style="display: none;">
+                <label for="comment-content">Add a comment:</label>
+                <textarea id="comment-content" name="content" required></textarea><br>
+                <button type="submit">Submit Comment</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Elizabeth Emerson's Blog</p>
+        <!-- Add social media links here -->
+    </footer>
+
+    <script src="frontend/scripts.js"></script>
+</body>
 </html>

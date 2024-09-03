@@ -53,17 +53,55 @@ table {
 General Styles
 =========================
 */
+* {
+    box-sizing: border-box;
+}
 body {  
     font: 300 16px/22px "Poppins", Arial, Helvetica, sans-serif;
-    background: #3b3c43;
-    color: #afb6be;
+    background: #2e2e2e;
+    color: #e5e5e5;
+    padding: 0;
+    margin: 0;
+    line-height: 1.6;
 }
+
+html, body {
+    overflow-x: hidden;
+}
+
+header, section, footer {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+header, nav {
+    position: relative;
+}
+/*
+=========================
+Section Styles
+=========================
+*/
+
+section {
+    padding: 60px 20px;
+    text-align: center;
+    margin: 20px auto;
+    overflow: visible;
+}
+
+/*
+=========================
+Button Styles
+=========================
+*/
+
 
 .btn {
     display: inline-block;
     padding: 15px 30px;
     margin-right: 10px;
-    background-color: rgba(73,93,145,1);
+    background-color: #6c757d;
     color: white;
     text-decoration: none;
     border-radius: 5px;
@@ -72,7 +110,7 @@ body {
 }
 
 .btn:hover {
-    background-color: rgba(59,60,67,1);
+    background-color: #495d91;
     transform: translateY(-3px);
 }
 
@@ -85,35 +123,62 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #495d91;
-    padding: 20px 50px;
-    border-bottom: 3px solid #afb6be;
-}
-
-.logo img {
-    max-width: 150px;
+    background-color: #343a40;
+    padding: 5px 25px;
+    border-bottom: 3px solid #495d91;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    overflow: hidden;
     
 }
 
 nav ul {
-    list-style-type: none;
+    display: flex;
+    flex-wrap: nowrap;
     margin: 0;
     padding: 0;
-    display: flex;
+    list-style: none;
+    overflow-x: flex-end;
+    white-space: nowrap;
 }
 
 nav ul li {
-    margin-left: 30px;
+    margin-left: 15px;
+    white-space: nowrap;
 }
 
 nav ul li a {
-    color:#afb6be;
+    color:#e5e5e5;
     text-decoration: none;
-    font-size: 1.2em;
+    font-size: 1em;
+    padding: 0px 10px;
+    transition: color 0.3s ease, background-color 0.3 ease;
 }
 
 nav ul li a:hover {
-    text-decoration: underline;
+    color: #0a9396;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+}
+
+.logo img {
+    width: 400px;
+    height: auto;
+    max-height: 60px;
+    object-fit: cover;
+}
+
+nav {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+header, nav ul {
+    width: 100%;
+    box-sizing: border-box;
 }
 
 
@@ -127,89 +192,77 @@ Hero Section Styles
 */
 .hero {
     display: flex;
-    background: rgb(59,60,67);
-    background: linear-gradient(90deg, rgba(59,60,67,1) 73%, rgba(73,93,145,1) 100%);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(90deg, rgba(46,46,46,1) 73%, rgba(52, 58, 64, 1) 100%);
     background-size: cover;
     background-position: center;
-    align-items: center;
-    padding: 100px 20px;
+    padding: 150px 20px;
     color: white;
+    text-align: center;
+    margin-top: 60px;
 }
 
 .hero-content {
-    max-width: 50%;
+    max-width: 800px;
+    padding:20px;
 }
 
 .hero h1 {
-    font-size: 3em;
+    font-size: 3.5em;
     margin-bottom: 20px;
     line-height: normal;
     
 }
 
-.wave {
-    display: inline-block;
-    animation: wave-animation 2s infinite;
-}
-
-@keyframes wave-animation {
-    0% { transform: rotate(0deg); }
-    25% { transform: rotate(14deg); }
-    50% { transform: rotate(-8deg); }
-    75% { transform: rotate(14deg); }
-    100% { transform: rotate(0deg); }
-}
 
 .hero p {
-    font-size: 1.2em;
-    padding: 20px;
+    font-size: 1.3em;
+    padding: 0 20px;
     margin-bottom: 20px;
 }
 
-.social links a {
-    margin-right: 15px;
-}
+
 
 .social-links img {
     width: 50px;
     height: 50px;
+    padding: 10px;
 }
 
 .hero-buttons .btn {
     display: inline-block;
     padding: 15px 30 px;
     margin-right: 10px;
-    background-color: rgb(59,60,67);
+    background-color: #6c757d;
     color: white;
     text-decoration: none;
     border-radius: 5px;
     font-size: 1.2em;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .hero-buttons .btn:hover {
     background-color: #495d91;
+    transform: translateY(-3px);
 }
 
 .hero-illustration img {
-    max-width: 100%;
+    max-width: 80%;
     height: auto;
+    margin-top: 30px;
 }
-
 
 /*
-=========================
-Section Styles
-=========================
+===========================
+Section Titles
+===========================
 */
-section {
-    padding: 60px 20px;
-    text-align: center;
-}
-
 section h2 {
     font-size: 2.5em;
     margin-bottom: 20px;
-    color: #495d91;
+    color: #f8f9fa;
 }
 
 
@@ -219,11 +272,36 @@ About Me Section
 =========================
 */
 #about img {
-    max-width: 200px;
-    border-radius: 50%;
-    display: block;
-    margin: 20px auto;
+    max-width: 130px; 
+    height: 100px;
+    margin: 0 auto; /*Space between icons and text*/
+    display: block; /* Aligns icons with text */
 }
+
+.about-details {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Creates 2 equal columns */
+    gap: 30px 40px;
+    justify-items: center;
+    padding: 20px 0;
+ }
+
+ .about-details li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.2em;
+    text-align: center;
+ }
+
+ .about-details li img {
+    margin-right: 10px;
+ }
+
+ .about-details li:hover {
+    transform: scale(1.1); /* Slightly enlarges icon on hover */
+    transition: transform 0.3s ease;
+ }
 
 /*
 =========================
@@ -232,11 +310,12 @@ Skills Section
 */
 
 #skills li {
-    background-color: #495d91;
+    background-color: #6c757d;
     margin: 10px 0;
     padding: 10px;
     border-radius: 5px;
     font-size: 1.2em;
+    color: white;
 }
 
 
@@ -246,17 +325,27 @@ Projects Section
 =========================
 */
 #projects .project {
-    background-color: #495d91;
-    border: 1px solid #afb6be;
+    background-color: #343a40;
+    border: 1px solid #495d91;
     padding: 20px;
     margin: 20px auto;
-    max-width: 0cqh600px;
+    max-width: 600px;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#projects .project:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4);
 }
 
 #projects .project img {
     max-width: 100%;
     height: auto;
 }
+
 
 /*
 =========================
@@ -267,7 +356,7 @@ Resume Section
 #resume a {
     display: inline-block;
     padding: 15px 30px;
-    background-color: #495d91;
+    background-color: #6c757d;
     color: white;
     text-decoration: none;
     border-radius: 5px;
@@ -278,16 +367,41 @@ resume a:hover {
     background-color: #495d91;
 }
 
-
 /*
 =========================
 Contact Section
 =========================
 */
-
+#contact {
+    display: block;
+    clear:  both;
+    padding-bottom: 60px;
+}
 #contact p, #contact a {
     font-size: 1.2em;
     color: #afb6be;
+}
+
+form {
+    background-color: #343a40;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #495d91;
+    border-radius: 5px;
+    background-color: #2e2e2e;
+    color: #e5e5e5;
+}
+
+input:focus, textarea:focus {
+    border-color: #0a9396;
+    outline: none;
 }
 
 /*
@@ -296,11 +410,108 @@ Footer Styles
 =========================
 */
 footer {
-    background-color: #495d91;
-    border-top: 3px solid #afb6be;
+    background-color: #343a40;
+    border-top: 3px solid #495d91;
     text-align: center;
-    padding: 20px 0;
-    position: relative;
+    padding: 30px 0;
+    color: white;
     width: 100%;
-    bottom:0;
+    margin-top: 60px;
+    
+}
+
+.footer-content p {
+    margin-bottom: 20px;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.social-icons {
+    margin-bottom: 20px;
+}
+
+.social-icons a {
+    display: inline-block;
+    margin: 0 10px; /* Spacing between icons */
+    width: 30px; /* Fixed width for icons */
+    height: 30px; /*Fixed height for icons */
+}
+
+.social-icons img {
+    width: 100%; /* Ensure the icon fits within the container */
+    height: auto; 
+    transition: transform 0.3s ease; /* Adds subtle hover effect */
+}
+
+.social-icons img:hover {
+    transform: scale(1.1); /* Slightly enlarges icon on hover */
+}
+
+.back-to-top {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #495d91;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.back-to-top {
+    background-color: #0a9396; /*Lighter hover effect */
+    transform: translateY(-3px); /*Slight hover movement */
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+section {
+    opacity: 0;
+    animation: fadeIn 1s ease-in-out forwards;
+    animation-delay: 0.5s;
+}
+
+/*
+========================
+Media Query for Smaller Screens
+==============================
+*/
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    nav ul {
+        justify-content: center;
+    }
+
+    .hero-content {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .hero h1 {
+        font-size: 2.5em;
+    }
+
+    .hero p {
+        font-size: 1.1em;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+    }
 }
