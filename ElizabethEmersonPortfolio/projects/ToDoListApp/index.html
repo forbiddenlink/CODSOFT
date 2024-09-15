@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>To-Do List</h1>
+
+        <!-- Dark Mode Toggle -->
+        <div class="dark-mode-toggle">
+            <label class="switch">
+                <input type="checkbox" id="dark-mode-toggle">
+                <span class="slider round"></span>
+            </label>
+            <span id="dark-mode-label">Dark Mode</span>
+        </div>
+
+        <!-- Input Section -->
+        <div class="input-section">
+            <input type="text" id="task-input" placeholder="Enter your task">
+            <button id="add-task-btn">Add Task</button>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <select id="filter-category">
+                <option value="All">All</option>
+                <option value="Work">Work</option>
+                <option value="Personal">Personal</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Others">Others</option>
+            </select>
+
+            <select id="filter-status">
+                <option value="All">All</option>
+                <option value="Completed">Completed</option>
+                <option value="Pending">Pending</option>
+            </select>
+        </div>
+
+        <!-- Task List -->
+        <ul id="task-list"></ul>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

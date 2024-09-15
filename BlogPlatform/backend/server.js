@@ -1,196 +1,189 @@
-require('dotenv').config();
+const dotenv = require('dotenv');
+const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const cors = require('cors');
+const { body, validationResult } = require('express-validator');
+const { BadRequestError, UnauthorizedError } = require('./errors.js');
+const errorHandler = require('./errorHandler.js');
+const Post = require('./models/Post');
+const User = require('./models/User');
+const Comment = require('./models/Comment');
+
+// Load environment variables
+dotenv.config({ path: path.join(__dirname, '.env') });
+
+if (!process.env.MONGO_URI) {
+  throw new Error('MONGO_URI is not defined in your .env file');
+}
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-app.use(cors()); // Enable CORS for all routes
+app.use(cors());
 app.use(express.json());
 
+// MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 })
-.then(() => console.log('Connected to MongoDB Atlas'))
-.catch(err => console.error('Could not connect to MongoDB Atlas', err));
+  .then(() => console.log('Connected to MongoDB Atlas'))
+  .catch(err => console.error('Could not connect to MongoDB Atlas', err));
 
-// Define User schema and model
-const userSchema = new mongoose.Schema({
-    username: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    role: { type: String, enum: ['Admin', 'Editor', 'Viewer'] }
-});
+// Middleware to protect routes
+const authMiddleware = (role) => (req, res, next) => {
+  const authHeader = req.header('Authorization');
+  if (!authHeader) return res.status(401).json({ message: 'Access Denied. No token provided.' });
 
-const User = mongoose.model('User', userSchema);
+  const token = authHeader.split(' ')[1];
+  if (!token) return res.status(401).json({ message: 'Access Denied. Invalid token.' });
 
-// Define Comment schema and model
-const commentSchema = new mongoose.Schema({
-    content: { type: String, required: true },
-    username: { type: String, required: true },
-    date: { type: Date, default: Date.now },
-    postId: { type: mongoose.Schema.Types.ObjectId, ref: 'Post', required: true }
-});
+  try {
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = verified;
 
-const Comment = mongoose.model('Comment', commentSchema);
-
-// Define Post schema and model
-const postSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    content: { type: String, required: true },
-    author: { type: String, required: true },
-    date: { type: Date, default: Date.now },
-});
-
-const Post = mongoose.model('Post', postSchema);
-
-// Middleware to protect routes (Authorization)
-const authMiddleware = (role) => {
-    return (req, res, next) => {
-        const authHeader = req.header('Authorization');
-        if (!authHeader) return res.status(401).send('Access Denied');
-
-        const token = authHeader.split(' ')[1]; // Extract the token after "Bearer"
-        if (!token) return res.status(401).send('Access Denied');
-
-        try {
-            const verified = jwt.verify(token, process.env.JWT_SECRET);
-            req.user = verified;
-
-            if (role && req.user.role !== role) {
-                return res.status(403).send('You do not have the required permissions');
-            }
-
-            next();
-        } catch (err) {
-            res.status(400).send('Invalid token');
-        }
-    };
+    if (role && req.user.role !== role) {
+      return res.status(403).json({ message: 'Forbidden. You do not have the required permissions.' });
+    }
+    next();
+  } catch (err) {
+    res.status(401).json({ message: 'Invalid token.' });
+  }
 };
 
-// Registration route
-app.post('/api/register', async (req, res) => {
-    try {
-        const { username, password, role } = req.body;
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
+// Generate Access Token
+const generateAccessToken = (user) => {
+  return jwt.sign({ _id: user._id, role: user.role, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+};
 
-        const newUser = new User({ username, password: hashedPassword, role });
-        await newUser.save();
-        res.status(201).send('User registered successfully');
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
-});
+// Serve static files from the frontend folder
+app.use(express.static(path.join(__dirname, '../frontend')));
 
-// Login route
-app.post('/api/login', async (req, res) => {
-    try {
-        const { username, password } = req.body;
+// API routes should be defined *before* the catch-all route for index.html
 
-        const user = await User.findOne({ username });
-        if (!user) return res.status(400).send('Invalid username or password');
-
-        const validPass = await bcrypt.compare(password, user.password);
-        if (!validPass) return res.status(400).send('Invalid username or password');
-
-        const token = jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.status(200).json({ message: 'Logged in successfully', token: token });
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
-});
-
-// Route to create a new blog post
-app.post('/api/posts', authMiddleware('Editor'), async (req, res) => {
-    try {
-        const { title, content, author } = req.body;
-        const newPost = new Post({ title, content, author });
-        await newPost.save();
-        res.status(201).send(newPost);
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
-});
-
-// Route to get all blog posts
+// Get all blog posts
 app.get('/api/posts', async (req, res) => {
-    try {
-        const posts = await Post.find();
-        res.status(200).send(posts);
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
+  try {
+    const posts = await Post.find();
+    res.status(200).json(posts);
+  } catch (err) {
+    res.status(500).json({ message: 'Error retrieving posts' });
+  }
 });
 
-// Route to get a single blog post by ID
-app.get('/api/posts/:id', async (req, res) => {
-    try {
-        const post = await Post.findById(req.params.id);
-        if (!post) return res.status(404).send('Post not found');
-        res.status(200).send(post);
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
+// Add a comment to a post
+app.post('/api/posts/:id/comments', authMiddleware('Viewer'), [
+  body('comment').isLength({ min: 1 }).withMessage('Comment cannot be empty'),
+], async (req, res, next) => {
+  const postId = req.params.id;
+  const { comment } = req.body;
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ message: 'Validation failed' });
+  }
+
+  try {
+    const post = await Post.findById(postId);
+    if (!post) return res.status(404).json({ message: 'Post not found' });
+
+    const newComment = new Comment({
+      postId,
+      comment,
+      userId: req.user._id,
+      username: req.user.username,
+    });
+
+    await newComment.save();
+    res.status(201).send(newComment);
+  } catch (err) {
+    res.status(500).json({ message: 'Error saving comment' });
+  }
 });
 
-// Route to create a new comment
-app.post('/api/posts/:id/comments', authMiddleware(), async (req, res) => {
-    try {
-        const { content } = req.body;
-        const postId = req.params.id;
-        const username = req.user._id; // Assuming you store the username in the token
-
-        const newComment = new Comment({ content, username, postId });
-        await newComment.save();
-
-        res.status(201).json(newComment);
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
-});
-
-// Route to get comments for a specific post
+// Get all comments for a specific post
 app.get('/api/posts/:id/comments', async (req, res) => {
-    try {
-        const comments = await Comment.find({ postId: req.params.id });
-        res.status(200).json(comments);
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
+  try {
+    const comments = await Comment.find({ postId: req.params.id });
+    res.status(200).json(comments);
+  } catch (err) {
+    res.status(500).json({ message: 'Error retrieving comments' });
+  }
 });
 
-// Route to update a blog post
-app.put('/api/posts/:id', authMiddleware('Editor'), async (req, res) => {
-    try {
-        const { title, content, author } = req.body;
-        const updatedPost = await Post.findByIdAndUpdate(
-            req.params.id,
-            { title, content, author },
-            { new: true }
-        );
-        if (!updatedPost) return res.status(404).send('Post not found');
-        res.status(200).send(updatedPost);
-    } catch (err) {
-        res.status(500).send(err.message);
+// User Profile Routes
+app.get('/api/profile', authMiddleware(), async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id).select('-password');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
+    res.status(200).json(user);
+  } catch (err) {
+    next(err);
+  }
 });
 
-// Route to delete a blog post
-app.delete('/api/posts/:id', authMiddleware('Admin'), async (req, res) => {
-    try {
-        const deletedPost = await Post.findByIdAndDelete(req.params.id);
-        if (!deletedPost) return res.status(404).send('Post not found');
-        res.status(200).send('Post deleted successfully');
-    } catch (err) {
-        res.status(500).send(err.message);
+// Registration route with validation
+app.post('/api/register', [
+  body('username').isLength({ min: 3 }).withMessage('Username must be at least 3 characters long'),
+  body('password').isStrongPassword().withMessage('Password must contain at least 8 characters, one uppercase, one lowercase, one number, and one symbol'),
+  body('role').isIn(['Viewer', 'Editor', 'Admin']).withMessage('Invalid role'),
+], async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ message: 'Validation failed' });
+  }
+
+  try {
+    const { username, password, role } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = new User({ username, password: hashedPassword, role });
+    await newUser.save();
+    res.status(201).send('User registered successfully');
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Login route with additional error handling and logging
+app.post('/api/login', async (req, res, next) => {
+  try {
+    const { username, password } = req.body;
+    console.log('Login attempt with username:', username);
+
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid username or password' });
     }
+
+    const validPass = await bcrypt.compare(password, user.password);
+    if (!validPass) {
+      return res.status(400).json({ message: 'Invalid username or password' });
+    }
+
+    const token = generateAccessToken(user);
+    res.status(200).json({ message: 'Logged in successfully', token });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Error Handling Middleware
+app.use(errorHandler);
+
+// Catch-all route to serve index.html for any unknown route
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/index.html')); // Correct path for your `index.html` in the frontend folder
 });
 
 // Start the server
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
+
+module.exports = app;

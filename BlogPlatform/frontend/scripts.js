@@ -1,11 +1,22 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const token = localStorage.getItem('token');
-    console.log("Token:", token);
+    console.log("Token on load:", token); // Debugging token retrieval
+
+    // Hide blog posts and other sections until user is authenticated
+    document.getElementById('blog-posts').style.display = 'none';
+    document.getElementById('create-post-section').style.display = 'none';
+    document.getElementById('profile-section').style.display = 'none';
 
     if (token) {
         const decodedToken = parseJwt(token);
+        console.log("Decoded token:", decodedToken); // Debug decoded token
+
         const userRole = decodedToken.role;
-        console.log("User role:", userRole);
+
+        // Show blog posts and profile-related content after login
+        document.getElementById('blog-posts').style.display = 'block';
+        document.getElementById('view-profile-button').style.display = 'inline-block'; // Show profile button
+        document.getElementById('logout-button').style.display = 'inline-block';
 
         // Show the Create Post section only for Editors or Admins
         if (userRole === 'Editor' || userRole === 'Admin') {
@@ -15,23 +26,19 @@ document.addEventListener('DOMContentLoaded', function() {
         // Hide the login and register forms
         document.getElementById('login-section').style.display = 'none';
         document.getElementById('register-section').style.display = 'none';
-
-        // Show the logout button
-        document.getElementById('logout-button').style.display = 'inline-block';
     } else {
-        console.log("Not logged in, showing login/register sections");
-
         // Show the login and register forms
         document.getElementById('login-section').style.display = 'block';
         document.getElementById('register-section').style.display = 'block';
 
-        // Hide the logout button and create post section
+        // Hide the logout button, profile button, and blog content
         document.getElementById('logout-button').style.display = 'none';
-        document.getElementById('create-post-section').style.display = 'none';
+        document.getElementById('view-profile-button').style.display = 'none';
+        document.getElementById('blog-posts').style.display = 'none';
     }
 
     // Handle registration form submission
-    document.getElementById('register-form').addEventListener('submit', async function(event) {
+    document.getElementById('register-form').addEventListener('submit', async function (event) {
         event.preventDefault();
 
         const username = document.getElementById('register-username').value;
@@ -41,9 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const response = await fetch('http://localhost:4000/api/register', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password, role })
             });
 
@@ -59,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Handle login form submission
-    document.getElementById('login-form').addEventListener('submit', async function(event) {
+    document.getElementById('login-form').addEventListener('submit', async function (event) {
         event.preventDefault();
 
         const username = document.getElementById('login-username').value;
@@ -68,39 +73,38 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const response = await fetch('http://localhost:4000/api/login', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
             });
 
             const data = await response.json();
-            console.log("Login response:", data);
+            console.log("Login response data:", data); // Debug login response
 
             if (response.ok) {
                 alert('Logged in successfully!');
                 localStorage.setItem('token', data.token);
                 document.getElementById('login-form').reset();
-                window.location.reload(); // Reload to apply changes
+                window.location.reload(); // Reload page after successful login
             } else {
-                alert('Login failed: ' + (data.message || data));
+                alert(`Login failed: ${data.message || 'An error occurred'}`);
             }
         } catch (error) {
             console.error('Error during login:', error);
+            alert('Login failed due to a network error.');
         }
     });
 
     // Handle logout
-    document.getElementById('logout-button').addEventListener('click', function() {
-        localStorage.removeItem('token'); // Remove token from storage
-        window.location.reload(); // Reload to apply changes
+    document.getElementById('logout-button').addEventListener('click', function () {
+        localStorage.removeItem('token');
+        window.location.reload();
     });
 
     // Fetch and display blog posts
     fetchPosts();
 });
 
-// Function to fetch and display blog posts
+// Fetch and display blog posts
 async function fetchPosts() {
     try {
         const response = await fetch('http://localhost:4000/api/posts');
@@ -119,60 +123,115 @@ async function fetchPosts() {
                 <h2 class="post-title">${post.title}</h2>
                 <p class="post-content">${post.content}</p>
                 <p class="post-author">By ${post.author}</p>
+                <form id="comment-form-${post._id}" class="comment-form">
+                    <textarea id="comment-content-${post._id}" placeholder="Add a comment"></textarea>
+                    <button type="submit">Submit Comment</button>
+                </form>
+                <ul id="comments-list-${post._id}" class="comments-list"></ul>
             `;
 
             postsContainer.appendChild(postElement);
 
-            // Fetch and display comments for each post
-            fetchComments(post._id);
+            document.getElementById(`comment-form-${post._id}`).addEventListener('submit', function (event) {
+                event.preventDefault();
+                handleCommentSubmit(post._id);
+            });
+
+            fetchComments(post._id); // Fetch comments for the post
         });
     } catch (error) {
         console.error('Error fetching posts:', error);
-        const postsContainer = document.getElementById('blog-posts');
-        postsContainer.innerHTML = `<p>Error loading posts. Please try again later.</p>`;
     }
 }
 
-// Function to fetch and display comments for a specific post
+// Fetch and display comments for a specific post
 async function fetchComments(postId) {
     try {
         const response = await fetch(`http://localhost:4000/api/posts/${postId}/comments`);
-        if (response.ok) {
-            const comments = await response.json();
-            const commentsList = document.getElementById('comments-list');
-            commentsList.innerHTML = '';
+        const comments = await response.json();
 
-            comments.forEach(comment => {
-                const commentElement = document.createElement('li');
-                commentElement.innerHTML = `
-                    <p><strong>${comment.username}</strong>: ${comment.content}</p>
-                    <p class="comment-date">${new Date(comment.date).toLocaleString()}</p>
-                `;
-                commentsList.appendChild(commentElement);
-            });
+        const commentsList = document.getElementById(`comments-list-${postId}`);
+        commentsList.innerHTML = '';
 
-            // Show the comment form if the user is logged in
-            const token = localStorage.getItem('token');
-            if (token) {
-                document.getElementById('comment-form').style.display = 'block';
-            }
-
-            // Ensure the comment section is displayed
-            document.getElementById('comments-section').style.display = 'block';
-        } else {
-            console.error('Failed to fetch comments, status:', response.status);
-        }
+        comments.forEach(comment => {
+            const commentElement = document.createElement('li');
+            commentElement.innerHTML = `
+                <p><strong>${comment.username}</strong>: ${comment.comment}</p>
+                <p class="comment-date">${new Date(comment.createdAt).toLocaleString()}</p>
+            `;
+            commentsList.appendChild(commentElement);
+        });
     } catch (error) {
         console.error('Error fetching comments:', error);
     }
 }
 
+// Fetch and display the user's profile
+async function fetchUserProfile() {
+    const token = localStorage.getItem('token');
+    console.log("Fetching profile with token:", token); // Debug token check
+    if (!token) {
+        alert('You must be logged in to view your profile');
+        return;
+    }
 
+    try {
+        const response = await fetch('http://localhost:4000/api/profile', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (response.ok) {
+            const user = await response.json();
+            console.log("Profile fetched successfully:", user); // Debug user profile response
+            document.getElementById('profile-username').value = user.username;
+            document.getElementById('profile-section').style.display = 'block'; // Show profile section
+        } else {
+            alert('Failed to fetch profile.');
+        }
+    } catch (error) {
+        console.error('Error fetching profile:', error);
+    }
+}
+
+// Handle comment submission
+async function handleCommentSubmit(postId) {
+    const content = document.getElementById(`comment-content-${postId}`).value;
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        alert('You must be logged in to comment.');
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:4000/api/posts/${postId}/comments`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ comment: content })
+        });
+
+        if (response.ok) {
+            alert('Comment added successfully!');
+            document.getElementById(`comment-form-${postId}`).reset();
+            fetchComments(postId);
+        } else {
+            const errorData = await response.json();
+            alert('Failed to add comment: ' + (errorData.message || 'An error occurred.'));
+        }
+    } catch (error) {
+        console.error('Error adding comment:', error);
+    }
+}
 
 // Helper function to decode a JWT token
 function parseJwt(token) {
     const base64Url = token.split('.')[1];
-    const base64 = decodeURIComponent(atob(base64Url).split('').map(function(c) {
+    const base64 = decodeURIComponent(atob(base64Url).split('').map(function (c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
     return JSON.parse(base64);

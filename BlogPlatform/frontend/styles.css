@@ -1,19 +1,41 @@
 /* Global Styles */
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #1e1e2f; /* Dark background */
-    color: #e0e0e0; /* Light text color */
+    background-color: #2D2D3A; /* Darker muted background */
+    color: #D1D1E9; /* Softer, light gray text color */
     line-height: 1.6;
+}
+
+main {
+    padding-bottom: 100px;
+}
+
+/* Add Fade-in Animation */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.6s ease forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Header and Navigation */
 header {
-    background-color: #2c2c3a; /* Darker header */
-    color: #ffffff;
+    background: linear-gradient(135deg, #4C4C6D, #3A3A55); /* Muted purple and gray gradient */
+    color: #FFFFFF;
     padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -42,14 +64,14 @@ header nav ul li:last-child {
 }
 
 header nav ul li a {
-    color: #e0e0e0;
+    color: #A6A6BB; /* Muted lavender for nav links */
     text-decoration: none;
-    font-weight: 500;
+    font-weight: bold;
     transition: color 0.3s ease;
 }
 
 header nav ul li a:hover {
-    color: #ff4081; /* Pink accent */
+    color: #7A7A9F; /* Darker muted lavender on hover */
 }
 
 header .search-box {
@@ -63,8 +85,14 @@ header .search-box input {
     border-radius: 20px;
     outline: none;
     font-size: 14px;
-    background-color: #33334d;
-    color: #ffffff;
+    background-color: #3A3A55;
+    color: #FFFFFF;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+header .search-box input:focus {
+    border-color: #9E9EBF;
+    box-shadow: 0 0 8px rgba(158, 158, 191, 0.5);
 }
 
 /* Blog Post Section */
@@ -75,23 +103,24 @@ header .search-box input {
 }
 
 .post {
-    background-color: #2c2c3a;
+    background-color: #3A3A55; /* Muted dark gray-lavender for posts */
     padding: 20px;
-    margin-bottom: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    color: #D1D1E9;
+    box-shadow: 0 0px 10px rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .post:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7);
 }
 
 .post-title {
     font-size: 28px;
     margin-bottom: 10px;
-    color: #ff4081; /* Pink accent */
+    color: #A6A6BB; /* Softer lavender for post titles */
 }
 
 .post-content {
@@ -101,16 +130,77 @@ header .search-box input {
 
 .post-author {
     font-size: 14px;
-    color: #aaaaaa;
+    color: #B4B4CC; /* Softer gray for author name */
 }
+
+/* Profile Section */
+#profile-section {
+    background-color: #4C4C6D;
+    color: #FFFFFF;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px auto;
+    width: 80%;
+    max-width: 600px;
+    display: none; /* Hidden by default, shown when fetched */
+}
+
+#profile-section h2 {
+    margin-bottom: 15px;
+    font-size: 24px;
+    color: #A6A6BB; /* Lavender for titles */
+}
+
+#profile-section form {
+    display: flex;
+    flex-direction: column;
+}
+
+#profile-section form label {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+#profile-section form input {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #59597A;
+    background-color: #3A3A55;
+    color: #FFFFFF;
+    font-size: 14px;
+}
+
+#profile-section form input:focus {
+    border-color: #7A7A9F;
+    box-shadow: 0 0 8px rgba(122, 122, 159, 0.5);
+}
+
+#profile-section button {
+    padding: 10px;
+    background-color: #6A6A8A;
+    color: #FFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#profile-section button:hover {
+    background-color: #5A5A7A;
+    transform: scale(1.05);
+}
+
 
 /* Create Post Section */
 #create-post-section {
-    background-color: #33334d; /* Darker section */
-    color: #ffffff;
+    background-color: #4C4C6D; /* Muted purple-gray for post creation section */
+    color: #FFFFFF;
     padding: 30px;
     border-radius: 10px;
     margin-bottom: 40px;
+    transition: all 0.3s ease;
+    animation: fadeIn 0.9s ease forwards;
 }
 
 #create-post-section h2 {
@@ -133,155 +223,98 @@ header .search-box input {
     margin-bottom: 20px;
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid #555;
-    background-color: #444;
-    color: #ffffff;
+    border: 1px solid #59597A;
+    background-color: #3A3A55;
+    color: #FFFFFF;
     font-size: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-#create-post-section form button {
+#create-post-section form input:focus,
+#create-post-section form textarea:focus {
+    border-color: #7A7A9F;
+    box-shadow: 0 0 8px rgba(122, 122, 159, 0.5);
+}
+
+/* Button Styling */
+button {
     padding: 10px 20px;
-    background-color: #ff4081; /* Pink accent */
+    background-color: #6A6A8A; /* Muted gray-purple for buttons */
     color: white;
     border: none;
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-#create-post-section form button:hover {
-    background-color: #e50050; /* Darker pink */
+button:hover {
+    background-color: #5A5A7A; /* Slightly darker on hover */
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Register and Login Sections */
+#login-register-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    margin: 50px 50px;
+    gap: 20px;
+}
+
 #register-section,
 #login-section {
-    padding: 30px;
-    background-color: #2c2c3a;
-    margin-bottom: 40px;
+    width: 40%;
+    padding: 20px;
+    background-color: #4C4C6D; /* Muted dark purple-gray */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-}
-
-#register-section h2,
-#login-section h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #ff4081; /* Pink accent */
-}
-
-#register-section form,
-#login-section form {
     display: flex;
     flex-direction: column;
 }
 
-#register-section form label,
-#login-section form label {
-    margin-bottom: 10px;
-    font-weight: bold;
+#register-section form,
+#login-section form {
+    padding: 20px;
+    background-color: #3A3A55;
+    border-radius: 8px;
+    border: 1px solid #59597A;
+    flex-grow: 1;
+}
+
+#register-section h2,
+#login-section h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #A6A6BB; /* Softer lavender titles */
 }
 
 #register-section form input,
 #login-section form input,
 #register-section form select {
-    margin-bottom: 20px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #555;
-    background-color: #444;
-    color: #ffffff;
-    font-size: 16px;
-}
-
-#register-section form button,
-#login-section form button {
-    padding: 10px 20px;
-    background-color: #ff4081; /* Pink accent */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-#register-section form button:hover,
-#login-section form button:hover {
-    background-color: #e50050; /* Darker pink */
-}
-
-/* Comment Section */
-.comments {
-    padding: 30px;
-    background-color: #2c2c3a;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-}
-
-.comments h3 {
-    margin-top: 0;
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #ff4081; /* Pink accent */
-}
-
-.comments ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.comments ul li {
-    padding: 15px 10px;
-    border-bottom: 1px solid #555;
-}
-
-.comments ul li:last-child {
-    border-bottom: none;
-}
-
-.comments .comment-date {
-    font-size: 12px;
-    color: #aaaaaa;
-}
-
-.comments form {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-}
-
-.comments form textarea {
     margin-bottom: 15px;
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid #555;
-    background-color: #444;
-    color: #ffffff;
-    font-size: 16px;
+    border: 1px solid #59597A;
+    background-color: #3A3A55;
+    color: #FFFFFF;
+    font-size: 14px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.comments form button {
-    padding: 10px 20px;
-    background-color: #ff4081; /* Pink accent */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.comments form button:hover {
-    background-color: #e50050; /* Darker pink */
+#register-section form input:focus,
+#login-section form input:focus {
+    border-color: #9E9EBF;
+    box-shadow: 0 0 8px rgba(158, 158, 191, 0.5);
 }
 
 /* Footer */
 footer {
     text-align: center;
     padding: 20px;
-    background-color: #2c2c3a;
-    color: white;
+    background: linear-gradient(135deg, #3A3A55, #4C4C6D);
+    color: #FFFFFF;
     position: fixed;
     width: 100%;
     bottom: 0;
@@ -289,10 +322,44 @@ footer {
 
 footer p {
     margin: 0;
+    color: #A6A6BB;
+}
+
+footer .social-icons a {
+    color: #A6A6BB;
+    font-size: 18px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+footer .social-icons a:hover {
+    color: #7A7A9F;
+    transform: translateY(-3px);
+}
+
+footer .social-icons img {
+    width: 30px;
+    height: 30px;
+    margin: 0 10px;
+    transition: transform 0.3s ease;
+}
+
+footer .social-icons img:hover {
+    transform: scale(1.2);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    #login-register-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #register-section,
+    #login-section {
+        width: 100%;
+        margin: 10px 0;
+    }
+
     header nav ul {
         flex-direction: column;
     }
@@ -303,18 +370,5 @@ footer p {
 
     #blog-posts {
         padding: 20px 10px;
-    }
-
-    #create-post-section {
-        padding: 20px;
-    }
-
-    #register-section,
-    #login-section {
-        padding: 20px;
-    }
-
-    .comments {
-        padding: 20px;
     }
 }

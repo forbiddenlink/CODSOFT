@@ -1,19 +1,32 @@
 {
   "name": "codsoft",
   "version": "1.0.0",
-  "description": "This is the ReadMe file for the Codsoft Internship Portfolio.\r This is a personal portgolio website I designed to showcase who I am and my technical skills using HTML and CSS.\r The goals of this website are to:\r - create a Header Section stating my name and Logo at the top with a brief introduction\r - create an about section with an image of myself and a short biography\r - create a skills section\r - showcase samples of my work in a projects section\r - provide a link to my resume in a resume section\r - create a contact section\r - add a footer with any additional information",
-  "main": "index.js",
+  "description": "Your project description",
+  "main": "BlogPlatform/backend/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node BlogPlatform/backend/server.js",
+    "dev": "nodemon BlogPlatform/backend/server.js",
+    "test": "mocha \"test/**/*.js\" --exit"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "jsonwebtoken": "^9.0.2"
+    "express-rate-limit": "^7.4.0",
+    "express-validator": "^7.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.8.1",
+    "mongoose": "^7.0.0",
+    "winston": "^3.14.2"
+  },
+  "devDependencies": {
+    "mocha": "^10.7.3",
+    "nodemon": "^3.1.4"
   }
 }
