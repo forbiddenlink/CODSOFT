@@ -34,7 +34,7 @@ mongoose.connect(process.env.MONGO_URI, {
   .catch(err => console.error('Could not connect to MongoDB Atlas', err));
 
 // Middleware to protect routes
-const authMiddleware = (role) => (req, res, next) => {
+const authMiddleware = (allowedRoles) => (req, res, next) => {
   const authHeader = req.header('Authorization');
   if (!authHeader) return res.status(401).json({ message: 'Access Denied. No token provided.' });
 
@@ -45,7 +45,7 @@ const authMiddleware = (role) => (req, res, next) => {
     const verified = jwt.verify(token, process.env.JWT_SECRET);
     req.user = verified;
 
-    if (role && req.user.role !== role) {
+    if (allowedRoles && !allowedRoles.includes(req.user.role)) {
       return res.status(403).json({ message: 'Forbidden. You do not have the required permissions.' });
     }
     next();
@@ -66,16 +66,42 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 
 // Get all blog posts
 app.get('/api/posts', async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 5;
+
   try {
-    const posts = await Post.find();
-    res.status(200).json(posts);
+    const count = await Post.countDocuments(); // Get the total number of posts
+    const totalPages = Math.ceil(count / limit);
+    const posts = await Post.find()
+      .populate('author', 'username _id')
+      .limit(limit)
+      .skip((page - 1) * limit);
+
+    res.status(200).json({ posts, totalPages });
   } catch (err) {
     res.status(500).json({ message: 'Error retrieving posts' });
   }
 });
 
+
+// Create a new blog post
+app.post('/api/posts', authMiddleware(['Editor', 'Admin']), async (req, res) => {
+  try {
+    const newPost = new Post({
+      title: req.body.title,
+      content: req.body.content,
+      author: req.user._id, // Save author's ObjectId
+    });
+
+    await newPost.save();
+    res.status(201).json(newPost);
+  } catch (err) {
+    res.status(500).json({ message: 'Error creating post' });
+  }
+});
+
 // Add a comment to a post
-app.post('/api/posts/:id/comments', authMiddleware('Viewer'), [
+app.post('/api/posts/:id/comments', authMiddleware(['Viewer', 'Editor', 'Admin']), [
   body('comment').isLength({ min: 1 }).withMessage('Comment cannot be empty'),
 ], async (req, res, next) => {
   const postId = req.params.id;
@@ -111,6 +137,70 @@ app.get('/api/posts/:id/comments', async (req, res) => {
     res.status(200).json(comments);
   } catch (err) {
     res.status(500).json({ message: 'Error retrieving comments' });
+  }
+});
+
+// Update a specific blog post (only the author can update)
+app.put('/api/posts/:id', authMiddleware(['Editor', 'Admin']), async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (!post) return res.status(404).json({ message: 'Post not found' });
+    if (post.author.toString() !== req.user._id) {
+      return res.status(403).json({ message: 'Forbidden. Only the author can edit this post.' });
+    }
+
+    const updatedPost = await Post.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(500).json({ message: 'Error updating post' });
+  }
+});
+
+// Delete a specific blog post (only the author can delete)
+app.delete('/api/posts/:id', authMiddleware(['Editor', 'Admin']), async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (!post) return res.status(404).json({ message: 'Post not found' });
+    if (post.author.toString() !== req.user._id) {
+      return res.status(403).json({ message: 'Forbidden. Only the author can delete this post.' });
+    }
+
+    await Post.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: 'Post deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error deleting post' });
+  }
+});
+
+// Delete a comment (only the author can delete)
+app.delete('/api/posts/:postId/comments/:commentId', authMiddleware(['Viewer', 'Editor', 'Admin']), async (req, res) => {
+  try {
+    const comment = await Comment.findById(req.params.commentId);
+    if (!comment) return res.status(404).json({ message: 'Comment not found' });
+    if (comment.userId.toString() !== req.user._id) {
+      return res.status(403).json({ message: 'Forbidden. Only the author can delete this comment.' });
+    }
+
+    await Comment.findByIdAndDelete(req.params.commentId);
+    res.status(200).json({ message: 'Comment deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error deleting comment' });
+  }
+});
+
+// Update a comment (only the author can edit)
+app.put('/api/posts/:postId/comments/:commentId', authMiddleware(['Viewer', 'Editor', 'Admin']), async (req, res) => {
+  try {
+    const comment = await Comment.findById(req.params.commentId);
+    if (!comment) return res.status(404).json({ message: 'Comment not found' });
+    if (comment.userId.toString() !== req.user._id) {
+      return res.status(403).json({ message: 'Forbidden. Only the author can edit this comment.' });
+    }
+
+    const updatedComment = await Comment.findByIdAndUpdate(req.params.commentId, req.body, { new: true });
+    res.status(200).json(updatedComment);
+  } catch (err) {
+    res.status(500).json({ message: 'Error updating comment' });
   }
 });
 

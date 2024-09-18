@@ -22,8 +22,31 @@
     </header>
 
     <main>
-        <section id="blog-posts">
-            <!-- Blog posts will be loaded here -->
+        <section id="profile-section" style="display: none;">
+            <h2>My Profile</h2>
+            <!-- Profile Edit Form moved to the top -->
+            <form id="profile-form">
+                <label for="profile-username">Username:</label>
+                <input type="text" id="profile-username" name="username" disabled><br>
+                <label for="profile-password">New Password (optional):</label>
+                <input type="password" id="profile-password" name="password"><br>
+                <button type="submit">Update Profile</button>
+                <button type="button" id="close-profile">Close</button>
+            </form>
+        </section>
+
+        <!-- Blog Posts Section with Pagination -->
+        <section id="blog-posts-container">
+            <div id="blog-posts">
+                <!-- Blog posts will be loaded here -->
+            </div>
+            <!-- Pagination Controls -->
+            <div id="pagination-controls">
+                <button id="prev-page">Previous</button>
+                <span id="pagination-numbers"></span>
+                <button id="next-page">Next</button>
+            </div>
+            
         </section>
 
         <!-- Blog Post Creation Form (visible only to Editors and Admins) -->
@@ -34,21 +57,7 @@
                 <input type="text" id="post-title" name="title" required><br>
                 <label for="content">Content:</label>
                 <textarea id="post-content" name="content" required></textarea><br>
-                <label for="author">Author:</label>
-                <input type="text" id="post-author" name="author" required><br>
                 <button type="submit">Create Post</button>
-            </form>
-        </section>
-
-        <!-- Profile Section -->
-        <section id="profile-section" style="display: none;">
-            <h2>My Profile</h2>
-            <form id="profile-form">
-                <label for="profile-username">Username:</label>
-                <input type="text" id="profile-username" name="username"><br>
-                <label for="profile-password">New Password (optional):</label>
-                <input type="password" id="profile-password" name="password"><br>
-                <button type="submit">Update Profile</button>
             </form>
         </section>
 
@@ -89,7 +98,7 @@
             <ul id="comments-list">
                 <!-- Comments will be loaded here -->
             </ul>
-            <form id="comment-form" style="display: none;">
+            <form id="comment-form">
                 <label for="comment-content">Add a comment:</label>
                 <textarea id="comment-content" name="content" required></textarea><br>
                 <button type="submit">Submit Comment</button>

@@ -191,6 +191,59 @@ header .search-box input:focus {
     transform: scale(1.05);
 }
 
+/* Pagination Controls */
+#pagination-controls {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+#pagination-controls button {
+    background-color: #4C4C6D; /* Muted dark purple-gray */
+    color: #FFF;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#pagination-controls button:hover {
+    background-color: #5A5A7A;
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+#pagination-controls button[disabled] {
+    background-color: #59597A; /* Disabled button color */
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+#pagination-numbers {
+    display: flex;
+    align-items: center;
+}
+
+#pagination-numbers button {
+    background-color: transparent;
+    color: #A6A6BB;
+    border: none;
+    font-size: 16px;
+    margin: 0 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+#pagination-numbers button.active {
+    color: #D1D1E9; /* Highlight active page number */
+    font-weight: bold;
+}
+
+#pagination-numbers button:hover {
+    color: #7A7A9F;
+}
 
 /* Create Post Section */
 #create-post-section {
