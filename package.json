@@ -2,16 +2,17 @@
   "name": "codsoft",
   "version": "1.0.0",
   "description": "Your project description",
-  "main": "BlogPlatform/backend/server.js",
+  "main": "backend/server.js",
   "scripts": {
-    "start": "node BlogPlatform/backend/server.js",
-    "dev": "nodemon BlogPlatform/backend/server.js",
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
     "test": "mocha \"test/**/*.js\" --exit"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "semver": "^7.3.5",
     "bcrypt": "^5.1.1",
     "chai": "^4.3.4",
     "chai-http": "^4.3.0",

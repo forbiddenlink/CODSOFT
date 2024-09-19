@@ -4,16 +4,42 @@ html {
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Open Sans', sans-serif; /* New Font Choice */
     margin: 0;
     padding: 0;
-    background-color: #2D2D3A; /* Darker muted background */
-    color: #D1D1E9; /* Softer, light gray text color */
+    background-color: #2D2D3A;
+    color: #D1D1E9;
     line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions for dark mode */
 }
 
 main {
     padding-bottom: 100px;
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #1B1B26;
+    color: #B3B3D1;
+}
+
+body.dark-mode header {
+    background: linear-gradient(135deg, #33334D, #2A2A44);
+}
+
+body.dark-mode #pagination-controls button {
+    background-color: #33334D;
+}
+
+body.dark-mode #create-post-section,
+body.dark-mode #profile-section,
+body.dark-mode #register-section,
+body.dark-mode #login-section {
+    background-color: #33334D;
+}
+
+body.dark-mode #blog-posts .post {
+    background-color: #2A2A44;
 }
 
 /* Add Fade-in Animation */
@@ -32,7 +58,7 @@ main {
 
 /* Header and Navigation */
 header {
-    background: linear-gradient(135deg, #4C4C6D, #3A3A55); /* Muted purple and gray gradient */
+    background: linear-gradient(135deg, #4C4C6D, #3A3A55);
     color: #FFFFFF;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -64,19 +90,34 @@ header nav ul li:last-child {
 }
 
 header nav ul li a {
-    color: #A6A6BB; /* Muted lavender for nav links */
+    color: #A6A6BB;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 600; /* Slightly bolder */
     transition: color 0.3s ease;
 }
 
 header nav ul li a:hover {
-    color: #7A7A9F; /* Darker muted lavender on hover */
+    color: #7A7A9F;
 }
 
+/* Dark Mode Toggle */
+#dark-mode-toggle {
+    background: none;
+    border: none;
+    color: #A6A6BB;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+#dark-mode-toggle:hover {
+    color: #7A7A9F;
+}
+
+/* Search Bar Enhancements */
 header .search-box {
     display: flex;
     align-items: center;
+    position: relative;
 }
 
 header .search-box input {
@@ -95,7 +136,21 @@ header .search-box input:focus {
     box-shadow: 0 0 8px rgba(158, 158, 191, 0.5);
 }
 
-/* Blog Post Section */
+header .search-box button {
+    position: absolute;
+    right: 5px;
+    background: none;
+    border: none;
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+header .search-box button:hover {
+    color: #7A7A9F;
+}
+
+/* Blog Post Section with Card Design */
 #blog-posts {
     padding: 40px 20px;
     max-width: 1200px;
@@ -103,13 +158,16 @@ header .search-box input:focus {
 }
 
 .post {
-    background-color: #3A3A55; /* Muted dark gray-lavender for posts */
+    background-color: #3A3A55;
     padding: 20px;
     margin-bottom: 20px;
-    border-radius: 8px;
+    border-radius: 12px;
     color: #D1D1E9;
     box-shadow: 0 0px 10px rgba(0, 0, 0, 0.15);
     transition: box-shadow 0.3s ease, transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .post:hover {
@@ -118,9 +176,10 @@ header .search-box input:focus {
 }
 
 .post-title {
+    font-family: 'Roboto', sans-serif; /* Font change for titles */
     font-size: 28px;
     margin-bottom: 10px;
-    color: #A6A6BB; /* Softer lavender for post titles */
+    color: #A6A6BB;
 }
 
 .post-content {
@@ -130,7 +189,138 @@ header .search-box input:focus {
 
 .post-author {
     font-size: 14px;
-    color: #B4B4CC; /* Softer gray for author name */
+    color: #B4B4CC;
+}
+
+/* Contact Section */
+#contact-section {
+    padding: 40px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #3A3A55;
+    color: #D1D1E9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background: url('background-pattern.png') no-repeat center center/cover; /* Background pattern */
+}
+
+#contact-section h2 {
+    font-size: 2em;
+    color: #A6A6BB;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.contact-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+/* Contact Links */
+.contact-details {
+    flex: 1;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul li {
+    margin-bottom: 15px;
+}
+
+ul li a {
+    color: #A6A6BB;
+    font-size: 18px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: #6A6A8A;
+    border-radius: 5px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+ul li a:hover {
+    transform: scale(1.05);
+    background-color: #5A5A7A;
+}
+
+/* Contact Image */
+.contact-image {
+    flex: 0 0 150px;
+    text-align: center;
+}
+
+.contact-image img {
+    max-width: 150px;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* About Section Styling */
+.about-box {
+    background-color: #3A3A55;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.about-container {
+    display: flex;
+    align-items: center;
+    gap: 30px; /* Space between image and text */
+    flex-wrap: wrap; /* Ensure responsiveness */
+}
+
+.about-text {
+    flex: 1;
+    color: #D1D1E9;
+}
+
+.about-image img {
+    max-width: 100%; /* Ensures the image is responsive */
+    border-radius: 10px; /* Adds a slight curve to the image */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow */
+    width: 250px; /* Adjust the size of the image */
+    height: auto; /* Maintain aspect ratio */
+}
+
+/* Add some padding around the about section */
+#about-section {
+    padding: 60px 20px;
+}
+
+/* Responsive Design for smaller screens */
+@media (max-width: 768px) {
+    .about-container {
+        flex-direction: column; /* Stack text and image vertically on smaller screens */
+        text-align: center;
+    }
+
+    .about-image img {
+        width: 100%; /* Make the image take full width on small screens */
+    }
+}
+
+
+
+
+/* Social Media Icons */
+ul li a i {
+    font-size: 24px;
+}
+
+ul li a:hover i {
+    transform: rotate(360deg); /* Spin effect on hover */
+    transition: transform 0.5s ease;
 }
 
 /* Profile Section */
@@ -138,57 +328,18 @@ header .search-box input:focus {
     background-color: #4C4C6D;
     color: #FFFFFF;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 12px;
     margin: 20px auto;
     width: 80%;
     max-width: 600px;
-    display: none; /* Hidden by default, shown when fetched */
+    display: none;
 }
 
 #profile-section h2 {
     margin-bottom: 15px;
+    font-family: 'Roboto', sans-serif;
     font-size: 24px;
-    color: #A6A6BB; /* Lavender for titles */
-}
-
-#profile-section form {
-    display: flex;
-    flex-direction: column;
-}
-
-#profile-section form label {
-    margin-bottom: 10px;
-    font-weight: bold;
-}
-
-#profile-section form input {
-    margin-bottom: 15px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #59597A;
-    background-color: #3A3A55;
-    color: #FFFFFF;
-    font-size: 14px;
-}
-
-#profile-section form input:focus {
-    border-color: #7A7A9F;
-    box-shadow: 0 0 8px rgba(122, 122, 159, 0.5);
-}
-
-#profile-section button {
-    padding: 10px;
-    background-color: #6A6A8A;
-    color: #FFF;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-#profile-section button:hover {
-    background-color: #5A5A7A;
-    transform: scale(1.05);
+    color: #A6A6BB;
 }
 
 /* Pagination Controls */
@@ -199,7 +350,7 @@ header .search-box input:focus {
 }
 
 #pagination-controls button {
-    background-color: #4C4C6D; /* Muted dark purple-gray */
+    background-color: #4C4C6D;
     color: #FFF;
     border: none;
     padding: 10px 20px;
@@ -216,7 +367,7 @@ header .search-box input:focus {
 }
 
 #pagination-controls button[disabled] {
-    background-color: #59597A; /* Disabled button color */
+    background-color: #59597A;
     cursor: not-allowed;
     opacity: 0.6;
 }
@@ -237,7 +388,7 @@ header .search-box input:focus {
 }
 
 #pagination-numbers button.active {
-    color: #D1D1E9; /* Highlight active page number */
+    color: #D1D1E9;
     font-weight: bold;
 }
 
@@ -247,10 +398,10 @@ header .search-box input:focus {
 
 /* Create Post Section */
 #create-post-section {
-    background-color: #4C4C6D; /* Muted purple-gray for post creation section */
+    background-color: #4C4C6D;
     color: #FFFFFF;
     padding: 30px;
-    border-radius: 10px;
+    border-radius: 12px;
     margin-bottom: 40px;
     transition: all 0.3s ease;
     animation: fadeIn 0.9s ease forwards;
@@ -258,41 +409,14 @@ header .search-box input:focus {
 
 #create-post-section h2 {
     margin-top: 0;
+    font-family: 'Roboto', sans-serif;
     font-size: 24px;
-}
-
-#create-post-section form {
-    display: flex;
-    flex-direction: column;
-}
-
-#create-post-section form label {
-    margin-bottom: 10px;
-    font-weight: bold;
-}
-
-#create-post-section form input,
-#create-post-section form textarea {
-    margin-bottom: 20px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #59597A;
-    background-color: #3A3A55;
-    color: #FFFFFF;
-    font-size: 16px;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-#create-post-section form input:focus,
-#create-post-section form textarea:focus {
-    border-color: #7A7A9F;
-    box-shadow: 0 0 8px rgba(122, 122, 159, 0.5);
 }
 
 /* Button Styling */
 button {
     padding: 10px 20px;
-    background-color: #6A6A8A; /* Muted gray-purple for buttons */
+    background-color: #6A6A8A;
     color: white;
     border: none;
     border-radius: 5px;
@@ -302,9 +426,26 @@ button {
 }
 
 button:hover {
-    background-color: #5A5A7A; /* Slightly darker on hover */
+    background-color: #5A5A7A;
     transform: scale(1.05);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Validation Feedback */
+input:invalid {
+    border-color: #FF6B6B;
+}
+
+textarea:invalid {
+    border-color: #FF6B6B;
+}
+
+input:valid {
+    border-color: #6BCB77;
+}
+
+textarea:valid {
+    border-color: #6BCB77;
 }
 
 /* Register and Login Sections */
@@ -320,7 +461,7 @@ button:hover {
 #login-section {
     width: 40%;
     padding: 20px;
-    background-color: #4C4C6D; /* Muted dark purple-gray */
+    background-color: #4C4C6D;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     display: flex;
@@ -340,7 +481,7 @@ button:hover {
 #login-section h2 {
     font-size: 22px;
     margin-bottom: 15px;
-    color: #A6A6BB; /* Softer lavender titles */
+    color: #A6A6BB;
 }
 
 #register-section form input,
@@ -356,19 +497,13 @@ button:hover {
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-#register-section form input:focus,
-#login-section form input:focus {
-    border-color: #9E9EBF;
-    box-shadow: 0 0 8px rgba(158, 158, 191, 0.5);
-}
-
 /* Footer */
 footer {
     text-align: center;
-    padding: 20px;
+    padding: 30px;
     background: linear-gradient(135deg, #3A3A55, #4C4C6D);
     color: #FFFFFF;
-    position: fixed;
+    position:fixed;
     width: 100%;
     bottom: 0;
 }
@@ -376,7 +511,19 @@ footer {
 footer p {
     margin: 0;
     color: #A6A6BB;
+    font-size: 12px;
 }
+
+
+/* Logo position on all pages */
+.logo-fixed {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    width: 80px; /* Adjust size if needed */
+    z-index: 1000; /* Ensures it stays on top of other elements */
+}
+
 
 footer .social-icons a {
     color: #A6A6BB;
@@ -389,15 +536,24 @@ footer .social-icons a:hover {
     transform: translateY(-3px);
 }
 
-footer .social-icons img {
-    width: 30px;
-    height: 30px;
-    margin: 0 10px;
-    transition: transform 0.3s ease;
+/* Loading Spinner */
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #6A6A8A;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
 }
 
-footer .social-icons img:hover {
-    transform: scale(1.2);
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* Responsive Design */
@@ -423,5 +579,41 @@ footer .social-icons img:hover {
 
     #blog-posts {
         padding: 20px 10px;
+    }
+
+    #blog-posts .post {
+        margin-bottom: 30px;
+    }
+
+    #create-post-section {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}
+
+/* Additional adjustments for smaller screens */
+@media (max-width: 480px) {
+    header nav ul {
+        padding: 10px 0;
+    }
+
+    header nav ul li {
+        margin-bottom: 15px;
+    }
+
+    #pagination-controls button {
+        padding: 8px 15px;
+    }
+
+    .post-title {
+        font-size: 22px;
+    }
+
+    .post-content {
+        font-size: 16px;
+    }
+
+    footer {
+        padding: 15px;
     }
 }

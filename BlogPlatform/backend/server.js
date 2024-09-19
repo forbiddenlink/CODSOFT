@@ -3,7 +3,7 @@ const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const cors = require('cors');
 const { body, validationResult } = require('express-validator');
 const { BadRequestError, UnauthorizedError } = require('./errors.js');
@@ -22,8 +22,12 @@ if (!process.env.MONGO_URI) {
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+app.use(express.static(path.join(__dirname, '../frontend')));
+
 app.use(cors());
 app.use(express.json());
+
+
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
@@ -59,9 +63,6 @@ const generateAccessToken = (user) => {
   return jwt.sign({ _id: user._id, role: user.role, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
 };
 
-// Serve static files from the frontend folder
-app.use(express.static(path.join(__dirname, '../frontend')));
-
 // API routes should be defined *before* the catch-all route for index.html
 
 // Get all blog posts
@@ -83,19 +84,46 @@ app.get('/api/posts', async (req, res) => {
   }
 });
 
+// Search blog posts by title or content
+app.get('/api/search', async (req, res) => {
+  const query = req.query.query;
+
+  if (!query) {
+    return res.status(400).json({ message: 'Search query is required' });
+  }
+
+  try {
+    const posts = await Post.find({
+      $or: [
+        { title: { $regex: query, $options: 'i' } },
+        { content: { $regex: query, $options: 'i' } }
+      ]
+    }).populate('author', 'username _id');
+
+    res.status(200).json({ posts });
+  } catch (err) {
+    console.error('Error searching posts:', err);
+    res.status(500).json({ message: 'Error searching posts' });
+  }
+});
 
 // Create a new blog post
 app.post('/api/posts', authMiddleware(['Editor', 'Admin']), async (req, res) => {
   try {
+    if (!req.body.title || !req.body.content) {
+      return res.status(400).json({ message: 'Title and content are required.' });
+    }
+
     const newPost = new Post({
       title: req.body.title,
       content: req.body.content,
-      author: req.user._id, // Save author's ObjectId
+      author: req.user._id,
     });
 
     await newPost.save();
     res.status(201).json(newPost);
   } catch (err) {
+    console.error('Error creating post:', err);
     res.status(500).json({ message: 'Error creating post' });
   }
 });
@@ -204,6 +232,23 @@ app.put('/api/posts/:postId/comments/:commentId', authMiddleware(['Viewer', 'Edi
   }
 });
 
+// Change password route
+app.put('/api/change-password', authMiddleware(), async (req, res) => {
+  const { password } = req.body;
+
+  if (!password) {
+    return res.status(400).json({ message: 'Password is required' });
+  }
+
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await User.findByIdAndUpdate(req.user._id, { password: hashedPassword });
+    res.status(200).json({ message: 'Password changed successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error changing password' });
+  }
+});
+
 // User Profile Routes
 app.get('/api/profile', authMiddleware(), async (req, res, next) => {
   try {
@@ -268,7 +313,7 @@ app.use(errorHandler);
 
 // Catch-all route to serve index.html for any unknown route
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/index.html')); // Correct path for your `index.html` in the frontend folder
+  res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
 });
 
 // Start the server

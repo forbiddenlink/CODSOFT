@@ -4,28 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Blogging Platform</title>
-    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts for enhanced typography -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@700&display=swap">
+    <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <header>
         <nav>
             <ul>
-                <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="#"><i class="fas fa-info-circle"></i> About</a></li>
-                <li><a href="#"><i class="fas fa-envelope"></i> Contact</a></li>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+                <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
                 <li><button id="view-profile-button">View Profile</button></li>
-                <li><input type="text" placeholder="Search..." id="search-box"></li>
+                <li>
+                    <!-- Search box for searching blog posts -->
+                    <input type="text" placeholder="Search posts..." id="search-box" aria-label="Search posts">
+                    <button id="search-button" aria-label="Search"><i class="fas fa-search"></i></button>
+                </li>
                 <li><button id="logout-button" style="display: none;"><i class="fas fa-sign-out-alt"></i> Logout</button></li>
+                <li>
+                    <!-- Dark Mode Toggle -->
+                    <button id="dark-mode-toggle" aria-label="Toggle Dark Mode"><i class="fas fa-moon"></i></button>
+                </li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <section id="profile-section" style="display: none;">
+        <!-- Profile Section -->
+        <section id="profile-section" style="display: none;" aria-live="polite">
             <h2>My Profile</h2>
-            <!-- Profile Edit Form moved to the top -->
-            <form id="profile-form">
+            <!-- Profile Edit Form -->
+            <form id="profile-form" aria-label="Profile Edit Form">
                 <label for="profile-username">Username:</label>
                 <input type="text" id="profile-username" name="username" disabled><br>
                 <label for="profile-password">New Password (optional):</label>
@@ -36,27 +47,26 @@
         </section>
 
         <!-- Blog Posts Section with Pagination -->
-        <section id="blog-posts-container">
+        <section id="blog-posts-container" aria-live="polite">
             <div id="blog-posts">
-                <!-- Blog posts will be loaded here -->
+                <!-- Blog posts will be dynamically loaded here -->
             </div>
             <!-- Pagination Controls -->
             <div id="pagination-controls">
-                <button id="prev-page">Previous</button>
+                <button id="prev-page" aria-label="Previous Page">Previous</button>
                 <span id="pagination-numbers"></span>
-                <button id="next-page">Next</button>
+                <button id="next-page" aria-label="Next Page">Next</button>
             </div>
-            
         </section>
 
         <!-- Blog Post Creation Form (visible only to Editors and Admins) -->
-        <section id="create-post-section" style="display: none;">
+        <section id="create-post-section" style="display: none;" aria-live="polite">
             <h2>Create a New Blog Post</h2>
             <form id="create-post-form">
                 <label for="title">Title:</label>
-                <input type="text" id="post-title" name="title" required><br>
+                <input type="text" id="post-title" name="title" required aria-required="true"><br>
                 <label for="content">Content:</label>
-                <textarea id="post-content" name="content" required></textarea><br>
+                <textarea id="post-content" name="content" required aria-required="true"></textarea><br>
                 <button type="submit">Create Post</button>
             </form>
         </section>
@@ -67,11 +77,11 @@
                 <h2>Register</h2>
                 <form id="register-form">
                     <label for="username">Username:</label>
-                    <input type="text" id="register-username" name="username" required><br>
+                    <input type="text" id="register-username" name="username" required aria-required="true"><br>
                     <label for="password">Password:</label>
-                    <input type="password" id="register-password" name="password" required><br>
+                    <input type="password" id="register-password" name="password" required aria-required="true"><br>
                     <label for="role">Role:</label>
-                    <select id="register-role" name="role" required>
+                    <select id="register-role" name="role" required aria-required="true">
                         <option value="Viewer">Viewer</option>
                         <option value="Editor">Editor</option>
                     </select><br>
@@ -84,9 +94,9 @@
                 <h2>Login</h2>
                 <form id="login-form">
                     <label for="username">Username:</label>
-                    <input type="text" id="login-username" name="username" required><br>
+                    <input type="text" id="login-username" name="username" required aria-required="true"><br>
                     <label for="password">Password:</label>
-                    <input type="password" id="login-password" name="password" required><br>
+                    <input type="password" id="login-password" name="password" required aria-required="true"><br>
                     <button type="submit">Login</button>
                 </form>
             </section>
@@ -100,22 +110,26 @@
             </ul>
             <form id="comment-form">
                 <label for="comment-content">Add a comment:</label>
-                <textarea id="comment-content" name="content" required></textarea><br>
+                <textarea id="comment-content" name="content" required aria-required="true"></textarea><br>
                 <button type="submit">Submit Comment</button>
             </form>
         </section>
     </main>
 
+    <!-- Footer Section -->
     <footer>
         <p>&copy; 2024 Elizabeth Emerson's Blog</p>
         <div class="social-icons">
-            <a href="#"><i class="fab fa-facebook"></i></a>
-            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.facebook.com/liz.tacular1/" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="https://linkedin.com/in/imkindageeky" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://www.instagram.com/imkindageeky/" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://x.com/liztacular1" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
         </div>
     </footer>
 
-    <script src="scripts.js"></script>
+    <img src="images/imkindakgeekylogo.png" alt="Site Logo" class="logo-fixed">
+
+
+    <script src="/scripts.js" defer></script>
 </body>
 </html>

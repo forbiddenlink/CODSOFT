@@ -6,6 +6,7 @@ chai.use(chaiHttp);
 const { expect } = chai;
 
 let validEditorToken = ''; // Editor token for creating blog posts
+let postId = ''; // Store the post ID for future tests
 
 // Log in as an editor and get the token
 before(function (done) {
@@ -25,7 +26,6 @@ before(function (done) {
 
 // Test suite for blog posts
 describe('Blog Post API Endpoints', function () {
-  let postId = ''; // Store the post ID for future tests
 
   it('should create a new blog post', function (done) {
     chai.request(app)
@@ -33,8 +33,7 @@ describe('Blog Post API Endpoints', function () {
       .set('Authorization', `Bearer ${validEditorToken}`)
       .send({
         title: 'Test Blog Post',
-        content: 'This is the content of the test blog post.',
-        author: 'EditorUser'
+        content: 'This is the content of the test blog post.'
       })
       .end(function (err, res) {
         expect(res).to.have.status(201);
@@ -49,7 +48,7 @@ describe('Blog Post API Endpoints', function () {
       .get('/api/posts')
       .end(function (err, res) {
         expect(res).to.have.status(200);
-        expect(res.body).to.be.an('array');
+        expect(res.body.posts).to.be.an('array'); // Assuming your posts are returned in 'posts'
         done();
       });
   });
@@ -60,6 +59,29 @@ describe('Blog Post API Endpoints', function () {
       .end(function (err, res) {
         expect(res).to.have.status(200);
         expect(res.body).to.have.property('_id', postId);
+        done();
+      });
+  });
+
+  it('should search blog posts by title', function (done) {
+    chai.request(app)
+      .get('/api/posts/search')
+      .query({ searchTerm: 'Test Blog Post' }) // Adjust search query accordingly
+      .end(function (err, res) {
+        expect(res).to.have.status(200);
+        expect(res.body.posts).to.be.an('array');
+        expect(res.body.posts[0]).to.have.property('title', 'Test Blog Post');
+        done();
+      });
+  });
+
+  // Cleanup after tests
+  after(function (done) {
+    chai.request(app)
+      .delete(`/api/posts/${postId}`)
+      .set('Authorization', `Bearer ${validEditorToken}`)
+      .end(function (err, res) {
+        expect(res).to.have.status(200);
         done();
       });
   });

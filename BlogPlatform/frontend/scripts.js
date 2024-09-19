@@ -42,6 +42,20 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('blog-posts').style.display = 'none';
     }
 
+    // Dark Mode Toggle
+    const darkModeToggle = document.getElementById('dark-mode-toggle'); // Link to existing button
+    darkModeToggle.addEventListener('click', function () {
+        document.body.classList.toggle('dark-mode');
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
+    });
+
+    // Apply dark mode based on user preference
+    const savedDarkMode = localStorage.getItem('darkMode');
+    if (savedDarkMode === 'enabled') {
+        document.body.classList.add('dark-mode');
+    }
+
     // Handle pagination controls
     document.getElementById('prev-page').addEventListener('click', () => {
         if (currentPage > 1) {
@@ -65,13 +79,27 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('profile-section').style.display = 'none';
     });
 
-    // Handle post creation form submission
+    // Handle search functionality
+    document.getElementById('search-button').addEventListener('click', () => {
+        const query = document.getElementById('search-box').value.trim();
+        if (query) {
+            searchPosts(query);
+        }
+    });
+
+    // Handle post creation form submission with content validation
     document.getElementById('create-post-form').addEventListener('submit', async function (event) {
         event.preventDefault();
 
         const title = document.getElementById('post-title').value;
         const content = document.getElementById('post-content').value;
         const token = localStorage.getItem('token');
+
+        // Validate content length
+        if (content.length < 20) {
+            alert('The content must be at least 20 characters long.');
+            return;
+        }
 
         if (!token) {
             alert('You must be logged in to create a post.');
@@ -82,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("Using token:", token); // Debug token
 
         try {
-            const response = await fetch('http://localhost:4000/api/posts', {
+            const response = await fetch('https://blog-platform-y7sa.onrender.com/api/posts', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -115,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const role = document.getElementById('register-role').value;
 
         try {
-            const response = await fetch('http://localhost:4000/api/register', {
+            const response = await fetch('https://blog-platform-y7sa.onrender.com/api/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password, role })
@@ -140,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const password = document.getElementById('login-password').value;
 
         try {
-            const response = await fetch('http://localhost:4000/api/login', {
+            const response = await fetch('https://blog-platform-y7sa.onrender.com/api/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
@@ -182,7 +210,7 @@ async function fetchUserProfile() {
     }
 
     try {
-        const response = await fetch('http://localhost:4000/api/profile', {
+        const response = await fetch('https://blog-platform-y7sa.onrender.com/api/profile', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -232,7 +260,7 @@ function displayUserProfile(profile) {
 async function changePassword(newPassword) {
     const token = localStorage.getItem('token');
     try {
-        const response = await fetch('http://localhost:4000/api/change-password', {
+        const response = await fetch('https://blog-platform-y7sa.onrender.com/api/change-password', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -257,7 +285,7 @@ async function fetchPosts() {
     const decodedToken = token ? parseJwt(token) : null;
 
     try {
-        const response = await fetch(`http://localhost:4000/api/posts?page=${currentPage}&limit=${postsPerPage}`);
+        const response = await fetch(`https://blog-platform-y7sa.onrender.com/api/posts?page=${currentPage}&limit=${postsPerPage}`);
         const { posts, totalPages } = await response.json();
 
         const postsContainer = document.getElementById('blog-posts');
@@ -309,7 +337,7 @@ async function deletePost(postId) {
     }
 
     try {
-        const response = await fetch(`http://localhost:4000/api/posts/${postId}`, {
+        const response = await fetch(`https://blog-platform-y7sa.onrender.com/api/posts/${postId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -337,7 +365,7 @@ async function editPost(postId) {
     }
 
     try {
-        const response = await fetch(`http://localhost:4000/api/posts/${postId}`, {
+        const response = await fetch(`https://blog-platform-y7sa.onrender.com/api/posts/${postId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -368,7 +396,7 @@ async function handleCommentSubmit(postId) {
     }
 
     try {
-        const response = await fetch(`http://localhost:4000/api/posts/${postId}/comments`, {
+        const response = await fetch(`https://blog-platform-y7sa.onrender.com/api/posts/${postId}/comments`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -396,7 +424,7 @@ async function fetchComments(postId) {
     const decodedToken = token ? parseJwt(token) : null;
 
     try {
-        const response = await fetch(`http://localhost:4000/api/posts/${postId}/comments`);
+        const response = await fetch(`https://blog-platform-y7sa.onrender.com/api/posts/${postId}/comments`);
         const comments = await response.json();
 
         const commentsList = document.getElementById(`comments-list-${postId}`);
@@ -428,7 +456,7 @@ async function deleteComment(postId, commentId) {
     }
 
     try {
-        const response = await fetch(`http://localhost:4000/api/posts/${postId}/comments/${commentId}`, {
+        const response = await fetch(`https://blog-platform-y7sa.onrender.com/api/posts/${postId}/comments/${commentId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -456,7 +484,7 @@ async function editComment(postId, commentId) {
     }
 
     try {
-        const response = await fetch(`http://localhost:4000/api/posts/${postId}/comments/${commentId}`, {
+        const response = await fetch(`https://blog-platform-y7sa.onrender.com/api/posts/${postId}/comments/${commentId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -476,6 +504,38 @@ async function editComment(postId, commentId) {
     }
 }
 
+// Handle search functionality (global function)
+async function searchPosts(query) {
+    try {
+        const response = await fetch(`https://blog-platform-y7sa.onrender.com/api/search?query=${encodeURIComponent(query)}`);
+        
+        // Check if the response content type is JSON
+        if (response.headers.get('content-type')?.includes('application/json')) {
+            const { posts } = await response.json();
+
+            const postsContainer = document.getElementById('blog-posts');
+            postsContainer.innerHTML = ''; // Clear existing posts
+
+            posts.forEach(post => {
+                const postElement = document.createElement('article');
+                postElement.classList.add('post');
+
+                postElement.innerHTML = `
+                    <h2 class="post-title">${post.title}</h2>
+                    <p class="post-content">${post.content}</p>
+                    <p class="post-author">By ${post.author ? post.author.username : 'Unknown Author'}</p>
+                `;
+
+                postsContainer.appendChild(postElement);
+            });
+        } else {
+            console.error('Non-JSON response received:', await response.text());
+        }
+    } catch (error) {
+        console.error('Error searching posts:', error);
+    }
+}
+
 // Handle pagination controls (global function)
 function updatePagination(totalPages) {
     const paginationNumbers = document.getElementById('pagination-numbers');
@@ -490,6 +550,7 @@ function updatePagination(totalPages) {
         pageButton.addEventListener('click', () => {
             currentPage = i;
             fetchPosts();
+            window.scrollTo(0, 0); // Scroll to top on page change
         });
         paginationNumbers.appendChild(pageButton);
     }

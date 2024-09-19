@@ -119,21 +119,28 @@ function openModal(projectId) {
     if (projectId === 'project1') {
         modalContent.innerHTML = `
             <h3>Basic Calculator</h3>
-            <img src="images/basiccalc.png" alt="Project 1 Image" class="small-image">
+            <img src="images/basiccalc.png" alt="Project 1 Image">
             <p>A simple calculator built using HTML, CSS, and JavaScript.</p>
             <a href="projects/BasicCalculator/index.html" class="btn" target="_blank">Open Calculator</a>
         `;
     } else if (projectId === 'project2') {
         modalContent.innerHTML = `
-            <h3>Project Title 2</h3>
-            <img src="images/project2.jpg" alt="Project 2 Image">
-            <p>Description of Project 2 goes here.</p>
-            <a href="#" class="btn">Coming Soon</a>
+            <h3>To-Do List App</h3>
+            <img src="images/todopic.png" alt="To-Do List App Image">
+            <p>This task management app helps users manage their tasks with features like task creation, editing, and dark mode. Built with HTML, CSS, and JavaScript.</p>
+            <h4>Key Features:</h4>
+            <ul>
+                <li>Dark mode toggle for a comfortable user experience.</li>
+                <li>Task prioritization and due date reminders.</li>
+                <li>Interactive UI for adding, editing, and deleting tasks.</li>
+                <li>Responsive design for mobile and desktop users.</li>
+            </ul>
+            <a href="projects/ToDoListApp/index.html" class="btn" target="_blank">Explore To-Do List App</a>
         `;
     } else if (projectId === 'project3') {
         modalContent.innerHTML = `
         <h3>Memory Matching Game</h3>
-        <img src="images/memorygame.png" alt="Memory Matching Game Image" class="small-image">
+        <img src="images/memorygame.png" alt="Memory Matching Game Image">
         <p>A fun memory game built using HTML, CSS, and JavaScript. Players find matching pairs of cards, with themes and difficulty levels.</p>
         <h4>Key Features:</h4>
         <ul>
@@ -147,21 +154,26 @@ function openModal(projectId) {
         <a href="projects/MemoryMatchingGame/index.html" class="btn" target="_blank">Play Game</a>
     `;
     
-    } else if (projectId === 'project4') {
-        modalContent.innerHTML = `
-            <h3>Project Title 4</h3>
-            <img src="images/project4.jpg" alt="Project 4 Image">
-            <p>Description of Project 4 goes here.</p>
-            <a href="#" class="btn">Coming Soon</a>
-        `;
-    }
+} else if (projectId === 'project4') {
+    modalContent.innerHTML = `
+        <h3>Blog Platform</h3>
+        <img src="images/blogplatpic.png" alt="Blog Platform Image">
+        <p>This is a full-stack blogging platform where users can create, read, update, and delete blog posts, leave comments, and manage their profiles.</p>
+        <h4>Key Features:</h4>
+        <ul>
+            <li>User Authentication using JSON Web Tokens (JWT).</li>
+            <li>Role-Based Access Control for blog management.</li>
+            <li>Blog post creation, editing, and deletion.</li>
+            <li>Comment system and profile management.</li>
+            <li>Responsive design with dark mode support.</li>
+        </ul>
+        <a href="https://blog-platform-y7sa.onrender.com/" class="btn" target="_blank">Visit Blog Platform</a>
+    `;
+}
     
     modal.style.display = 'flex';
 }
 
-    
- 
-   
 
 // Close the modal
 function closeModal() {
