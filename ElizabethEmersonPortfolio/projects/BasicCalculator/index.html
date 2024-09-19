@@ -6,9 +6,14 @@
         <title>Basic Calculator</title>
         <link rel="stylesheet" href="styles.css">
     </head>
+
     <body>
+        <!-- Main calculator container -->
         <div class="calculator">
+            <!-- Display section for showing the entered values and results -->
             <div class="display" id="display"></div>
+
+                <!-- Button container holding all the calculator buttons -->
                 <div class="buttons">
                     <button class="btn" data-value="7">7</button>
                     <button class="btn" data-value="8">8</button>
@@ -32,9 +37,13 @@
 
                     <button class="btn equals" data-value="=">=</button>
                 </div>
+
+                <!-- Button to toggle between light and dark modes -->
                 <button id="theme-toggle" class="btn">Light Mode</button>
             </div>
         </div>
+
+        <!-- Link to the external JavaScript file that controls calculator functionality -->
         <script src="script.js"></script>
     </body>
 </html>

@@ -1,87 +1,100 @@
 // Function to start the main content
 function startSite() {
+    // Hide the loading screen and display the main content
     document.getElementById('loading-screen').style.display = 'none';
     document.getElementById('main-content').style.display = 'block';
-    window.scrollTo(0, 0); // Ensures the page starts at the top
+    // Scroll to the top of the page once content is shown
+    window.scrollTo(0, 0);
 }
 
 // Show the start button when the loading animation completes
 window.onload = function() {
+    // Wait for 3 seconds before showing the start button
     setTimeout(function() {
         document.getElementById('start-button').classList.add('show');
     }, 3000); // Match the duration of the loading animation
 };
 
-// JavaScript for Sticky Navigation Fallback
-window.onscroll = function() {stickyNav(); revealProjects();};
+// Sticky navigation and reveal animation for project cards
+window.onscroll = function() {
+    stickyNav(); // Call the function to handle sticky navigation
+    revealProjects(); // Call the function to reveal project cards on scroll
+};
 
+// Reference to the header element
 var header = document.querySelector("header");
-var sticky = header.offsetTop;
+var sticky = header.offsetTop; // Get the header's initial position
 
+// Function to handle sticky navigation
 function stickyNav() {
+    // If the page scrolls past the header's position, make it sticky
     if (window.pageYOffset > sticky) {
         header.classList.add("sticky");
     } else {
+        // Remove sticky class when scrolled back to the top
         header.classList.remove("sticky");
     }
 }
 
-// Smooth scrolling function for navigation links
+// Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault(); // Prevent default anchor click behavior
+        // Scroll smoothly to the section referenced by the link's href
         document.querySelector(this.getAttribute('href')).scrollIntoView({
             behavior: 'smooth'
         });
     });
 });
 
-// Scroll animations for Projects Section
+// Scroll animations for revealing project cards
 function revealProjects() {
-    const projects = document.querySelectorAll('.project-card');
+    const projects = document.querySelectorAll('.project-card'); // Select all project cards
     projects.forEach(function(project) {
-        const projectPosition = project.getBoundingClientRect().top;
-        const screenPosition = window.innerHeight / 1.3;
+        const projectPosition = project.getBoundingClientRect().top; // Get the card's position relative to the viewport
+        const screenPosition = window.innerHeight / 1.3; // Trigger the animation when the card is 1/3rd from the top
 
+        // Add the visible class when the card is within view
         if (projectPosition < screenPosition) {
             project.classList.add('scroll-visible');
         }
     });
 }
 
-// Form Validation and Success Message
+// Form validation function
 function validateForm() {
+    // Get form elements by their IDs
     const name = document.getElementById('name');
     const email = document.getElementById('email');
     const message = document.getElementById('message');
-    let isValid = true;
+    let isValid = true; // Flag to track if the form is valid
 
-    // Name validation
+    // Validate the name input
     if (name.value === '') {
-        name.classList.add('error');
+        name.classList.add('error'); // Add error styling if name is empty
         isValid = false;
     } else {
-        name.classList.remove('error');
+        name.classList.remove('error'); // Remove error styling if name is filled
     }
 
-    // Email validation (simple regex check)
+    // Email validation using a simple regex pattern
     const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
     if (!email.value.match(emailPattern)) {
-        email.classList.add('error');
+        email.classList.add('error'); // Add error styling if email is invalid
         isValid = false;
     } else {
-        email.classList.remove('error');
+        email.classList.remove('error'); // Remove error styling if email is valid
     }
 
-    // Message validation
+    // Validate the message input
     if (message.value === '') {
-        message.classList.add('error');
+        message.classList.add('error'); // Add error styling if message is empty
         isValid = false;
     } else {
-        message.classList.remove('error');
+        message.classList.remove('error'); // Remove error styling if message is filled
     }
 
-    // If valid, show success message and clear fields
+    // If the form is valid, show the success message and clear the fields
     if (isValid) {
         document.getElementById('success-message').style.display = 'block';
         name.value = '';
@@ -89,32 +102,32 @@ function validateForm() {
         message.value = '';
     }
 
-    return false; // Prevent form from submitting for this demo
+    return false; // Prevent form submission for demo purposes
 }
 
-// Add an event listener to the form submit button
+// Add event listener to form submit button
 document.querySelector('form').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevents actual form submission
-    validateForm(); // Calls validation function
+    event.preventDefault(); // Prevent form submission
+    validateForm(); // Call the validation function
 });
 
-// Scroll animations for About Me section
+// Scroll animation for the About Me section
 window.addEventListener('scroll', function() {
-    const aboutSection = document.getElementById('about');
-    const position = aboutSection.getBoundingClientRect().top;
-    const screenPosition = window.innerHeight / 1.2;
+    const aboutSection = document.getElementById('about'); // Select the About Me section
+    const position = aboutSection.getBoundingClientRect().top; // Get its position relative to the viewport
+    const screenPosition = window.innerHeight / 1.2; // Trigger when the section is 1/5th from the top
     if (position < screenPosition) {
-        aboutSection.classList.add('scroll-active');
+        aboutSection.classList.add('scroll-active'); // Add the scroll-active class to trigger the animation
     }
 });
 
-// Modal JavaScript
+// Function to open a modal with project details
 function openModal(projectId) {
-    var modal = document.getElementById('project-modal');
-    var modalContent = document.getElementById('project-modal-content');
+    var modal = document.getElementById('project-modal'); // Select the modal element
+    var modalContent = document.getElementById('project-modal-content'); // Select the modal content container
 
-    document.body.style.overflow = 'hidden';
-    
+    document.body.style.overflow = 'hidden'; // Prevent scrolling when the modal is open
+
     // Populate modal with project-specific details
     if (projectId === 'project1') {
         modalContent.innerHTML = `
@@ -153,9 +166,8 @@ function openModal(projectId) {
         </ul>
         <a href="projects/MemoryMatchingGame/index.html" class="btn" target="_blank">Play Game</a>
     `;
-    
-} else if (projectId === 'project4') {
-    modalContent.innerHTML = `
+    } else if (projectId === 'project4') {
+        modalContent.innerHTML = `
         <h3>Blog Platform</h3>
         <img src="images/blogplatpic.png" alt="Blog Platform Image">
         <p>This is a full-stack blogging platform where users can create, read, update, and delete blog posts, leave comments, and manage their profiles.</p>
@@ -169,23 +181,21 @@ function openModal(projectId) {
         </ul>
         <a href="https://blog-platform-y7sa.onrender.com/" class="btn" target="_blank">Visit Blog Platform</a>
     `;
-}
-    
-    modal.style.display = 'flex';
-}
+    }
 
+    modal.style.display = 'flex'; // Display the modal
+}
 
 // Close the modal
 function closeModal() {
-    document.getElementById('project-modal').style.display = 'none';
+    document.getElementById('project-modal').style.display = 'none'; // Hide the modal
+    document.body.style.overflow = 'auto'; // Re-enable page scrolling
 }
-
-document.body.style.overflow = 'auto';
 
 // Close modal if the user clicks outside the modal content
 window.onclick = function(event) {
     var modal = document.getElementById('project-modal');
     if (event.target === modal) {
-        modal.style.display = 'none';
+        modal.style.display = 'none'; // Close the modal if the user clicks outside of it
     }
 }

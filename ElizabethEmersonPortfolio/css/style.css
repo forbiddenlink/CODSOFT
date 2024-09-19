@@ -1,3 +1,4 @@
+/* Reset all default styles to ensure cross-browser consistency */
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
@@ -23,25 +24,36 @@ time, mark, audio, video {
 	font: inherit;
 	vertical-align: baseline;
 }
-/* HTML5 display-role reset for older browsers */
+
+/* Ensures that these HTML5 elements behave consistently across older browsers */
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+
+/* Set the body line height to ensure consistent spacing across text elements */
 body {
 	line-height: 1;
 }
+
+/* Remove default list styles for ordered and unordered lists */
 ol, ul {
 	list-style: none;
 }
+
+/* Remove quotation marks from blockquote elements */
 blockquote, q {
 	quotes: none;
 }
+
+/* Remove quotation mark content from before and after blockquotes */
 blockquote:before, blockquote:after,
 q:before, q:after {
 	content: '';
 	content: none;
 }
+
+/* Collapse borders in tables and remove spacing between cells */
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
@@ -52,52 +64,62 @@ table {
 General Styles
 =========================
 */
+
+/* Use the box-sizing property to include padding and border in element width/height */
 * {
     box-sizing: border-box;
 }
+
+/* General body styles, including font and background color */
 body {  
     font: 300 16px/22px "Poppins", Arial, Helvetica, sans-serif;
-    background: #2e2e2e;
-    color: #e5e5e5;
+    background: #2e2e2e; /* Dark background color */
+    color: #e5e5e5; /* Light text color */
     padding: 0;
     margin: 0;
     line-height: 1.6;
 }
 
+/* Prevent horizontal scrolling */
 html, body {
     overflow-x: hidden;
 }
 
+/* Enable smooth scrolling for anchor links */
 html {
     scroll-behavior: smooth;
 }
 
+/* Ensure maximum width for key layout elements and prevent horizontal scrolling */
 header, section, footer {
     max-width: 100%;
     overflow-x: hidden;
 }
 
+/* Make header and nav position relative for future positioning adjustments */
 header, nav {
     position: relative;
 }
 
+/* Styling for the tagline under the logo */
 .tagline {
     font-size: 1.2em;
     color: #e5e5e5;
     margin-top: 5px;
 }
 
+/* Basic styles for icons */
 .icon {
     width: 30px;
     height: 30px;
     margin-right: 10px;
 }
 
+/* Add a scaling effect when icons are hovered over */
 .icon:hover {
     transform: scale(1.1);
     transition: transform 0.3s ease;
 }
-
 
 /*
 =========================
@@ -105,6 +127,7 @@ Section Styles
 =========================
 */
 
+/* Generic styling for all sections to ensure spacing and centering */
 section {
     padding: 60px 20px;
     text-align: center;
@@ -118,11 +141,12 @@ Button Styles
 =========================
 */
 
+/* Default styling for buttons */
 .btn {
     display: inline-block;
     padding: 15px 30px;
     margin-right: 10px;
-    background-color: #6c757d;
+    background-color: #6c757d; /* Default button background */
     color: white;
     text-decoration: none;
     border-radius: 5px;
@@ -130,64 +154,73 @@ Button Styles
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
+/* Change button background color and elevate slightly on hover */
 .btn:hover {
     background-color: #495d91;
     transform: translateY(-3px);
 }
 
 /*
-==========================
-Loading Screen Styles 
-==========================
+=========================
+Loading Screen Styles
+=========================
 */
+
+/* Full-screen loading screen overlay */
 #loading-screen {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #2e2e2e;
+    background-color: #2e2e2e; /* Matches site background */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 10000;
+    z-index: 10000; /* Ensure the loading screen is on top of all elements */
     color: #e5e5e5;
 }
 
+/* Loading text styling with animation for fading in and out */
 #loading-text {
     font-size: 2em;
     margin-bottom: 20px;
     animation: fadeInText 1.5s ease-in-out infinite alternate;
 }
 
+/* Keyframes for fading in and out text */
 @keyframes fadeInText {
     from { opacity: 0.5; }
     to { opacity: 1; }
 }
 
+/* Loading bar container styling */
 #loading-bar-container {
     width: 80%;
     max-width: 400px;
     height: 10px;
-    background-color: #495d91;
+    background-color: #495d91; /* Background for the loading bar container */
     border-radius: 5px;
     overflow: hidden;
     margin-bottom: 20px;
 }
 
+/* The actual loading bar that animates */
 #loading-bar {
     width: 0;
     height: 100%;
-    background-color: #0a9396;
-    animation: load 3s ease-in-out forwards;
+    background-color: #0a9396; /* Color of the loading bar */
+    animation: load 3s ease-in-out forwards; /* Fill the bar over 3 seconds */
 }
 
+/* Animation for the loading bar filling up */
 @keyframes load {
     from { width: 0; }
     to { width: 100%; }
 }
 
+/* Start button that shows after the loading screen completes */
 #start-button {
     padding: 10px 20px;
     background-color: #495d91;
@@ -196,19 +229,22 @@ Loading Screen Styles
     border-radius: 5px;
     font-size: 1.2em;
     cursor: pointer;
-    opacity: 0; /* Initially hidden */
+    opacity: 0; /* Hidden initially */
     transition: opacity 0.5s ease-in-out;
 }
 
+/* Show the start button when the class is added */
 #start-button.show {
-    opacity: 1; /* Show button when loading is complete */
+    opacity: 1;
 }
 
+/* Slight scaling effect when the start button is hovered over */
 #start-button:hover {
     background-color: #0a9396;
     transform: scale(1.05);
 }
 
+/* Basic paragraph styling */
 p {
     margin-top: 10px;
     font-size: 1.2em;
@@ -220,20 +256,23 @@ p {
 Header Styles
 =========================
 */
+
+/* Header container that includes logo and navigation */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #343a40;
     padding: 5px 25px;
-    border-bottom: 3px solid #495d91;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-bottom: 3px solid #495d91; /* Border separating header from content */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
     width: 100%;
     z-index: 9999;
     position: fixed;
     top: 0;
 }
 
+/* Styling for the unordered list of navigation links */
 nav ul {
     display: flex;
     flex-wrap: nowrap;
@@ -244,13 +283,15 @@ nav ul {
     white-space: nowrap;
 }
 
+/* Ensure spacing between navigation items */
 nav ul li {
     margin-left: 15px;
     white-space: nowrap;
 }
 
+/* Basic styles for navigation links */
 nav ul li a {
-    color:#e5e5e5;
+    color: #e5e5e5;
     text-decoration: none;
     font-size: 1em;
     padding: 0px 10px;
@@ -258,7 +299,7 @@ nav ul li a {
     transition: color 0.3s ease, background-color 0.3s ease;
 }
 
-
+/* Add an underline effect when hovering over nav links */
 nav ul li a::after {
     content: '';
     position: absolute;
@@ -266,10 +307,11 @@ nav ul li a::after {
     bottom: 0;
     width: 0;
     height: 2px;
-    background-color: #0a9396;
+    background-color: #0a9396; /* Underline color */
     transition: width 0.3s ease;
 }
 
+/* Change text color and underline width on hover */
 nav ul li a:hover {
     color: #0a9396;
 }
@@ -278,6 +320,7 @@ nav ul li a:hover::after {
     width: 100%;
 }
 
+/* Styling for the logo image in the header */
 .logo img {
     width: 400px;
     height: auto;
@@ -285,16 +328,13 @@ nav ul li a:hover::after {
     object-fit: cover;
 }
 
+/* Ensure that the nav remains scrollable if there are too many links */
 nav {
     overflow-x: auto;
     max-width: 100%;
 }
 
-header, nav ul {
-    width: 100%;
-    box-sizing: border-box;
-}
-
+/* Make the navigation bar sticky when scrolling */
 .sticky {
     position: fixed;
     top: 0;
@@ -307,6 +347,8 @@ header, nav ul {
 Hero Section Styles
 =========================
 */
+
+/* Main hero section that appears at the top of the page */
 .hero {
     display: flex;
     flex-direction: column;
@@ -319,10 +361,11 @@ Hero Section Styles
     color: white;
     text-align: center;
     margin-top: 60px;
-    opacity: 0;
-    animation: fadeInHero 2s ease-in forwards;
+    opacity: 0; /* Initially hidden, will fade in */
+    animation: fadeInHero 2s ease-in forwards; /* Fade in animation */
 }
 
+/* Fade-in animation for the hero section */
 @keyframes fadeInHero {
     from {
         opacity: 0;
@@ -332,20 +375,23 @@ Hero Section Styles
     }
 }
 
+/* Container for the hero content */
 .hero-content {
     max-width: 800px;
     padding: 20px;
 }
 
+/* Large heading in the hero section */
 .hero h1 {
     font-size: 3.5em;
     margin-bottom: 20px;
     line-height: normal;
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInUp 1.5s ease-in-out forwards;
+    opacity: 0; /* Hidden initially */
+    transform: translateY(30px); /* Moves up from below */
+    animation: fadeInUp 1.5s ease-in-out forwards; /* Fade and move up */
 }
 
+/* Animation to fade in and move the heading up */
 @keyframes fadeInUp {
     0% {
         opacity: 0;
@@ -357,40 +403,45 @@ Hero Section Styles
     }
 }
 
+/* Paragraph styles for hero section */
 .hero p {
     font-size: 1.3em;
     padding: 0 20px;
     margin-bottom: 20px;
 }
 
+/* Social media icons in the hero section */
 .social-links img {
     width: 50px;
     height: 50px;
     padding: 10px;
 }
 
+/* Add a scaling effect when hovering over social icons */
 .social-links img:hover {
     transform: scale(1.1);
     transition: transform 0.3s ease;
 }
 
+/* Social media icon styling */
 .social-links i {
-    font-size: 50px; /* Adjust the size as needed */
+    font-size: 50px;
     padding: 20px;
 }
 
+/* Adjust color of social links */
 .social-links a {
-    color: #fff; /* Change this to your desired color */
-    margin-right: 15px; /* Optional: spacing between icons */
+    color: #fff; /* Default white color */
+    margin-right: 15px;
     transition: color 0.3s ease;
 }
 
+/* Change color of social links on hover */
 .social-links a:hover {
-    color: #0a9396; /* Optional: change color on hover */
+    color: #0a9396;
 }
 
-
-
+/* Styling for buttons in the hero section */
 .hero-buttons .btn {
     display: inline-block;
     padding: 15px 30px;
@@ -401,15 +452,16 @@ Hero Section Styles
     border-radius: 5px;
     font-size: 1.2em;
     transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Adds shadow */
 }
 
+/* Hover effect for buttons */
 .hero-buttons .btn:hover {
     background-color: #0a9396;
-    transform: translateY(-5px);
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transform: translateY(-5px); /* Move the button up slightly */
 }
 
+/* Styling for the image in the hero section */
 .hero-illustration img {
     max-width: 80%;
     height: auto;
@@ -421,10 +473,12 @@ Hero Section Styles
 Section Titles
 ===========================
 */
+
+/* General styling for section titles */
 section h2 {
     font-size: 2.5em;
     margin-bottom: 20px;
-    color: #f8f9fa;
+    color: #f8f9fa; /* Light color for the titles */
 }
 
 /*
@@ -433,34 +487,37 @@ About Me Section
 =========================
 */
 
+/* Container for the About Me section */
 .about-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 40px 20px;
-    background-color: #343a40;
+    background-color: #343a40; /* Dark background */
     border-radius: 10px;
-    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3); /* Add shadow for depth */
     max-width: 1200px;
     margin: 20px auto;
     color: #e5e5e5;
     text-align: center;
 }
 
+/* Image styles for the About Me section */
 #about img {
     max-width: 250px;
     height: auto;
     margin-bottom: 20px;
-    border-radius: 10%;
+    border-radius: 10%; /* Round the image corners */
 }
 
-
+/* Styling for the heading in the About Me section */
 .about-container h2 {
     font-size: 2.5em;
     margin-bottom: 20px;
     color: #0a9396; /* Accent color */
 }
 
+/* Paragraph styles for the About Me section */
 .about-container p {
     font-size: 1.2em;
     line-height: 1.8;
@@ -469,6 +526,7 @@ About Me Section
     color: #e5e5e5;
 }
 
+/* Layout for the details listed in the About Me section */
 .about-details {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* Creates 3 equal columns */
@@ -477,6 +535,7 @@ About Me Section
     padding: 20px 0;
 }
 
+/* Individual list items in the About Me section */
 .about-details li {
     display: flex;
     flex-direction: column;
@@ -487,6 +546,7 @@ About Me Section
     transition: transform 0.3s ease;
 }
 
+/* Image inside each detail */
 .about-details li img {
     width: 50px;
     height: 50px;
@@ -494,14 +554,17 @@ About Me Section
     transition: transform 0.3s ease;
 }
 
+/* Scale the list item slightly on hover */
 .about-details li:hover {
     transform: translateY(-5px);
 }
 
+/* Scale the image inside the list item on hover */
 .about-details li:hover img {
     transform: scale(1.2);
 }
 
+/* Styling for the paragraph text inside list items */
 .about-details li p {
     font-size: 1.1em;
     color: #afb6be;
@@ -513,20 +576,23 @@ Skills Section
 =========================
 */
 
+/* Container for the Skills section */
 #skills {
     padding: 50px;
-    background-color: #2e2e2e;
+    background-color: #2e2e2e; /* Dark background */
 }
 
+/* Layout for the skills container */
 .skills-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minimax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid */
     gap: 30px;
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
+/* Individual skill card */
 .skill-card {
     background-color: #343a40;
     border-radius: 10px;
@@ -538,45 +604,50 @@ Skills Section
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
+/* Scale up the skill card and add shadow on hover */
 .skill-card:hover {
     transform: scale(1.05);
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4);
 }
 
+/* Image for each skill */
 .skill-card img {
     width: 50px;
     height: 50px;
     margin-bottom: 10px;
 }
 
+/* Skill title */
 .skill-card h3 {
     color: #f8f9fa;
     font-size: 1.3em;
     margin-bottom: 10px;
 }
 
+/* Skill description */
 .skill-card p {
     color: #afb6be;
     font-size: 1em;
     text-align: center;
 }
+
 /*
 =========================
 Projects Section
 =========================
 */
 
-/* Projects Container Styles */
+/* Layout for the projects section */
 .projects-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid for projects */
     gap: 20px;
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
-/* Project Card Styles */
+/* Individual project card */
 .project-card {
     background-color: #343a40;
     border-radius: 10px;
@@ -590,21 +661,20 @@ Projects Section
     transition: all 0.5s ease-in-out;
 }
 
+/* Hover effect for project card */
 .project-card:hover {
     transform: translateY(-10px) scale(1.05);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
+/* Image inside the project card */
 .project-card img {
     width: 100%;
     height: auto;
     border-radius: 10px;
 }
 
-.project-card .project-details {
-    padding: 10px 0;
-}
-
+/* Button that appears when hovering over project card */
 .project-card .btn {
     display: none;
     margin-top: 10px;
@@ -616,22 +686,24 @@ Projects Section
     transition: background-color 0.3s ease;
 }
 
+/* Display the button on hover */
 .project-card:hover .btn {
     display: inline-block;
 }
 
+/* Button hover effect */
 .project-card .btn:hover {
     background-color: #495d91;
 }
 
-/* Scroll Animation */
+/* Scroll animation to reveal project cards */
 .scroll-visible {
     opacity: 1;
     transform: translateY(0);
     transition: all 0.5s ease-in-out;
 }
 
-/* Modal Styles */
+/* Modal styles for project details */
 .modal {
     display: none;
     position: fixed;
@@ -649,7 +721,7 @@ Projects Section
     box-sizing: border-box;
 }
 
-/* Modal Content */
+/* Modal content container */
 .modal-content {
     background-color: #2e2e2e;
     padding: 20px;
@@ -663,10 +735,12 @@ Projects Section
     z-index: 10001;
 }
 
+/* Modal title */
 .modal-content h3 {
     color: #fff;
 }
 
+/* Close button for modal */
 .close {
     position: absolute;
     top: 10px;
@@ -676,10 +750,12 @@ Projects Section
     cursor: pointer;
 }
 
+/* Change close button color on hover */
 .close:hover {
     color: #aaa;
 }
 
+/* Modal image */
 .modal-content img {
     width: 100%;
     height: auto;
@@ -687,6 +763,7 @@ Projects Section
     margin-bottom: 15px;
 }
 
+/* Styling for small images in the modal */
 .small-image {
     max-width: 100px; /* Adjust the size as needed */
     height: auto;
@@ -694,6 +771,7 @@ Projects Section
     margin: 0 auto;
 }
 
+/* Animation to fade in and move up the modal content */
 @keyframes fadeInUp {
     0% {
         opacity: 0;
@@ -705,7 +783,7 @@ Projects Section
     }
 }
 
-/* Modal Scrollbar Styles */
+/* Styling for the modal scrollbar */
 .modal-content::-webkit-scrollbar {
     width: 10px;
 }
@@ -715,13 +793,14 @@ Projects Section
     border-radius: 10px;
 }
 
-/* Modal Close Button */
+/* Close button styling */
 .close {
     color: #aaa;
     font-size: 28px;
     font-weight: bold;
 }
 
+/* Close button hover effects */
 .close:hover,
 .close:focus {
     color: #fff;
@@ -729,17 +808,13 @@ Projects Section
     cursor: pointer;
 }
 
-
-   
-
-
-
 /*
 =========================
 Resume Section
 =========================
 */
 
+/* Styling for the resume download link */
 #resume a {
     display: inline-block;
     padding: 15px 30px;
@@ -750,6 +825,7 @@ Resume Section
     font-size: 1.2em;
 }
 
+/* Hover effect for the resume download link */
 resume a:hover {
     background-color: #495d91;
 }
@@ -759,16 +835,21 @@ resume a:hover {
 Contact Section
 =========================
 */
+
+/* General container for the contact section */
 #contact {
     display: block;
     clear: both;
     padding-bottom: 60px;
 }
+
+/* Paragraph and anchor styles inside contact section */
 #contact p, #contact a {
     font-size: 1.2em;
     color: #afb6be;
 }
 
+/* Form container styling for the contact form */
 #contact form {
     background-color: #343a40;
     padding: 30px;
@@ -778,7 +859,7 @@ Contact Section
     margin: 0 auto;
 }
 
-
+/* Input and textarea field styling */
 input, textarea {
     width: 100%;
     padding: 15px;
@@ -790,18 +871,20 @@ input, textarea {
     transition: border-color 0.3s ease, box-shadow 0.3x ease;
 }
 
+/* Focus state for input and textarea fields */
 input:focus, textarea:focus {
     border-color: #0a9396;
     outline: none;
     box-shadow: 0 0 8px rgba(10, 147, 150, 0.5);
 }
 
-/* Error state for validation */
+/* Error state for form validation */
 input.error, textarea.error {
     border-color: red;
     box-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
 }
 
+/* Submit button styling */
 button.btn {
     display: inline-block;
     padding: 15px 30px;
@@ -815,23 +898,32 @@ button.btn {
     width: 100%;
 }
 
+/* Hover effect for the submit button */
 button.btn:hover {
     background-color: #0a9396;
     transform: translateY(-3px);
 }
 
+/* Active state for the submit button */
 button.btn:active {
     transform: scale(0.98);
 }
 
-/* Success message */
+/* Success message styling */
 #success-message {
     display: none;
     color: #0a9396;
     margin-top: 15px;
     font-size: 1.2em;
 }
-/* Footer Styles */
+
+/*
+=========================
+Footer Styles
+=========================
+*/
+
+/* Footer container */
 footer {
     background-color: #343a40;
     border-top: 3px solid #495d91;
@@ -842,19 +934,23 @@ footer {
     margin-top: 60px;
 }
 
+/* Footer content styling */
 .footer-content p {
     margin-bottom: 20px;
 }
 
+/* Footer content container */
 .footer-content {
     max-width: 1200px;
     margin: 0 auto;
 }
 
+/* Social icons in the footer */
 .social-icons {
     margin-bottom: 20px;
 }
 
+/* Social icons styling */
 .social-icons a {
     display: inline-block;
     margin: 0 15px;
@@ -863,10 +959,12 @@ footer {
     transition: color 0.3s ease;
 }
 
+/* Change color of social icons on hover */
 .social-icons a:hover {
     color: #0a9396;
 }
 
+/* Back to top button in the footer */
 .back-to-top {
     display: inline-block;
     margin-top: 20px;
@@ -878,11 +976,13 @@ footer {
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
+/* Hover effect for the back to top button */
 .back-to-top:hover {
     background-color: #0a9396;
     transform: translateY(-3px);
 }
 
+/* Animation to fade in sections when scrolled into view */
 @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -894,6 +994,7 @@ footer {
     }
 }
 
+/* Make sections fade in with delay */
 section {
     opacity: 0;
     animation: fadeIn 1s ease-in-out forwards;
@@ -903,34 +1004,44 @@ section {
 /*
 ========================
 Media Query for Smaller Screens
-==============================
+========================
 */
+
+/* Media query for screens smaller than 768px */
 @media (max-width: 768px) {
+    /* Make the header layout vertical */
     header {
         flex-direction: column;
         align-items: flex-start;
     }
 
+    /* Center navigation links */
     nav ul {
         justify-content: center;
     }
 
+    /* Hero content adjustments for smaller screens */
     .hero-content {
         padding: 20px;
         text-align: center;
     }
 
+    /* Adjust font size for smaller screens */
     .hero h1 {
         font-size: 2.5em;
     }
 
+    /* Adjust paragraph font size for smaller screens */
     .hero p {
         font-size: 1.1em;
     }
 
+    /* Stack hero buttons vertically on smaller screens */
     .hero-buttons {
         flex-direction: column;
     }
+
+    /* Adjust modal content width and height for smaller screens */
     .modal-content {
         width: 95%;
         max-width: none; /* Remove the fixed max width */
